@@ -1,12 +1,8 @@
-"""
-import the adapter and try to connect to the database
-"""
 
 import os
-# import psycopg2
 
 def migrate():
-    from api.app import db
+    from .. import db
     conn = db.conn
     cur = db.cursor
 
@@ -14,6 +10,7 @@ def migrate():
     	id serial PRIMARY KEY,
     	name varchar,
     	email varchar UNIQUE,
+        username varchar,
     	password varchar
     	);""")
 
@@ -30,12 +27,15 @@ def migrate():
     cur.execute("""CREATE TABLE IF NOT EXISTS sales(
         id serial PRIMARY KEY,
         product_id INT,
+        quantity numeric NOT NULL,
+        price numeric NOT NULL,
         date_posted TIMESTAMP,
-        status varchar,
+        category varchar,
         FOREIGN KEY (product_id) REFERENCES products(id)
         );""")
     
     print("Database connected")
+    
     conn.commit()
 
 
