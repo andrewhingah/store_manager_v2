@@ -1,6 +1,36 @@
 '''Tests for users'''
 import json
-from .base_test import BaseTestCase
+# from .base_test import BaseTestCase
+
+import unittest
+import json
+
+from .. database.db_con import migrate
+
+from .. import create_app
+
+class BaseTestCase(unittest.TestCase):
+    """Parent tests class"""
+
+    def setUp(self):
+        """Define test variables and initialize app."""
+        self.app = create_app(config_name="testing")
+        migrate()
+    
+        self.client = self.app.test_client()
+
+        self.users = {'email': 'andrewhinga5@gmail.com', 'username': 'andrew5', 'password': '1234'}
+        self.new_user = {'email': 'john@gmail.com', 'username':'john', 'password': '1881'}
+        self.user = {'email': 'henry@gmail.com','username': 'henry','password': 'password'}
+        self.bad_user = {"password":"password"}
+
+
+        self.header = {"Content-Type": "application/json"}
+
+        self.s_url = 'api/v1/auth/signup' #signup url
+        self.l_url = 'api/v1/auth/login' #login url
+        self.p_url = 'api/v1/products' #products url
+
 
 
 class UsersTestCase(BaseTestCase): 
@@ -44,3 +74,8 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(response.data.decode())
 
         self.assertEqual(result['message'], "Your account does not exist!, Please Register!")
+
+
+if __name__ == "__main__":
+    unittest.main()
+
