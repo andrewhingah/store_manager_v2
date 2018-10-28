@@ -3,7 +3,7 @@ from flask_jwt_extended import JWTManager
 from flask import Flask, Blueprint
 
 
-from app.database.database import Database
+from app.db_con import Database
 
 db = Database()
 

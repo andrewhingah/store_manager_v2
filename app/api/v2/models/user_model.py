@@ -1,4 +1,5 @@
-from ....database import helpers
+# from . import helpers
+from app.api.v2.models import helpers
 
 class User:
 	'''Class represents operations related to products'''

@@ -1,4 +1,4 @@
-#app/database/helpers.py
+'''helper functions for models'''
 import datetime
 import psycopg2
 import os
