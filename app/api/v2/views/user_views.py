@@ -8,23 +8,11 @@ from app.api.v2.models.helpers import insert_user,get_user
 from app.api.v2.models.user_model import User
 
 
-# parser = reqparse.RequestParser()
-# parser.add_argument('name')
-# parser.add_argument('email')
-# parser.add_argument('username')
-# parser.add_argument('password')
-
 class UserRegistration(Resource):
 	"""All products class"""
 
 	def post(self):
 		"""Register a new user"""
-		
-		# args = parser.parse_args()
-		# name = args['name']
-		# email = args['email']
-		# username = args['username']
-		# password = args['password']
 
 		data = request.get_json()
 		name = data['name']
@@ -48,9 +36,6 @@ class UserRegistration(Resource):
 class UserLogin(Resource):
 	'''login a registered user'''
 	def post(self):
-		# args = parser.parse_args()
-		# email = args['email']
-		# password = args['password']
 
 		data = request.get_json()
 		email = data['email']

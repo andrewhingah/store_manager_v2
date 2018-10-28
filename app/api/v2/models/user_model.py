@@ -1,4 +1,4 @@
-# from . import helpers
+'''Class for user data'''
 from app.api.v2.models import helpers
 
 class User:
