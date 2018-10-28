@@ -42,6 +42,13 @@ class BaseTestCase(unittest.TestCase):
         "password":"password"
         }
 
+        self.new_product = {
+        "name": "HP Laptop",
+        "quantity": 50,
+        "price": 55000,
+        "category": "electronics"
+        }
+
 
         self.header = {"Content-Type": "application/json"}
 
@@ -113,6 +120,30 @@ class UsersTestCase(BaseTestCase):
             "Your account does not exist! Please register")
 
         self.assertEqual(response.status_code, 401)
+
+    def test_create_new_product(self):
+        '''test admin can create a new product'''
+        data = self.new_product
+        response = self.client.post(self.p_url,
+            data=json.dumps(data), headers=self.header)
+
+        result = json.loads(response.data.decode())
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result['message'], 'product added successfully')
+
+    def test_create_product_with_similar_name(self):
+        '''test admin is notified when creating an already existing product'''
+        data = self.new_product
+        res1 = self.client.post(self.p_url,
+            data = json.dumps(data), headers = self.header)
+        res2 = self.client.post(self.p_url,
+            data = json.dumps(data), headers = self.header)
+        result = json.loads(res2.data.decode())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(result['message'],
+            'product already in stock, consider updating the quantity')
+
 
     def tearDown(self):
         reset_migrations()
