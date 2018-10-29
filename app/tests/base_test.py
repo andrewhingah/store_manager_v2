@@ -4,6 +4,8 @@ setup and initializes data'''
 import unittest
 import json
 
+from ..database.db_con import migrate
+
 from .. import create_app
 
 class BaseTestCase(unittest.TestCase):
@@ -12,6 +14,7 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app(config_name="testing")
+        migrate()
     
         self.client = self.app.test_client()
 

@@ -17,7 +17,7 @@ class TestingConfig(Config):
     """Configuration for Testing."""
     TESTING = True
     DEBUG = True
-    DATABASE_NAME = "test_storemanager"
+    DATABASE_NAME = "test_store"
     JWT_SECRET_KEY = "heypeople"
 
 class StagingConfig(Config):
