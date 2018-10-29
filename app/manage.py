@@ -1,8 +1,22 @@
 
 import os
 
+def reset_migrations():
+    from app import db
+    conn = db.conn
+    cur = db.cursor
+
+    cur.execute("""DELETE FROM sales;""")
+
+    cur.execute("""DELETE FROM products;""")
+
+    cur.execute("""DELETE FROM users;""")
+
+    conn.commit()
+
+
 def migrate():
-    from .. import db
+    from app import db
     conn = db.conn
     cur = db.cursor
 
