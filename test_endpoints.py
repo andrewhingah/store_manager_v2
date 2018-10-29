@@ -43,10 +43,10 @@ class BaseTestCase(unittest.TestCase):
         }
 
         self.new_product = {
+        "category": "electronics",
         "name": "HP Laptop",
         "quantity": 50,
-        "price": 55000,
-        "category": "electronics"
+        "price": 55000
         }
 
 
@@ -55,6 +55,15 @@ class BaseTestCase(unittest.TestCase):
         self.s_url = 'api/v2/auth/signup' #signup url
         self.l_url = 'api/v2/auth/login' #login url
         self.p_url = 'api/v2/products' #products url
+
+    def register_user(self, name='', email='', password=''):
+        user_data = self.users
+        return self.client.post(self.s_url, data=user_data)
+
+    def login_user(self, email='', password=''):
+        user_data = self.users
+        response = self.client.post(self.l_url, data=user_data)
+        return response
 
 
 
@@ -123,17 +132,22 @@ class UsersTestCase(BaseTestCase):
 
     def test_create_new_product(self):
         '''test admin can create a new product'''
-        data = self.new_product
-        response = self.client.post(self.p_url,
-            data=json.dumps(data), headers=self.header)
+        self.register_user()
+        result = self.login_user()
+        access_token = json.loads(result.data.decode())['token']
 
-        result = json.loads(response.data.decode())
+        response = self.client.post(self.p_url,
+            data=self.new_product, headers=dict(Authorization="Bearer " + access_token))
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(result['message'], 'product added successfully')
 
     def test_create_product_with_similar_name(self):
         '''test admin is notified when creating an already existing product'''
+        self.register_user()
+        result = self.login_user()
+        access_token = json.loads(result.data.decode())['token']
+
         data = self.new_product
         res1 = self.client.post(self.p_url,
             data = json.dumps(data), headers = self.header)
