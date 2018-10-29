@@ -62,3 +62,14 @@ class AllProducts(Resource):
 			"status":"created",
 			"product":newproduct.__dict__}
 			), 201)
+
+		def get(self):
+			'''view all available products'''
+			email = get_jwt_identity()
+			user = get_user(email)
+
+			products = get_products()
+			if products is None:
+				return jsonify ({"message": "No products available"}), 404
+
+			return jsonify({"message": "successfully", "Products": products}), 200
