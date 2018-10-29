@@ -6,7 +6,7 @@ import json
 
 from app.manage import migrate, reset_migrations
 
-from app.app import create_app
+from app import create_app
 
 class BaseTestCase(unittest.TestCase):
     """Parent tests class"""
@@ -140,7 +140,7 @@ class UsersTestCase(BaseTestCase):
         res2 = self.client.post(self.p_url,
             data = json.dumps(data), headers = self.header)
         result = json.loads(res2.data.decode())
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(res2.status_code, 400)
         self.assertEqual(result['message'],
             'product already in stock, consider updating the quantity')
 
