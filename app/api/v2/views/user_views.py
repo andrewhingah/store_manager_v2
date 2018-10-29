@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api, Resource, reqparse
-from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import (
+	jwt_required, create_access_token, get_jwt_identity, get_raw_jwt)
 from werkzeug.security import safe_str_cmp
 
 from app.api.v2.models.helpers import insert_user,get_user
@@ -31,7 +32,8 @@ class UserRegistration(Resource):
 				"user":user.__dict__}
 				), 201)
 		else:
-			return make_response(jsonify({'message':'Email already exists.'}), 202)
+			return make_response(jsonify(
+				{'message':'Email already exists.'}), 202)
 
 class UserLogin(Resource):
 	'''login a registered user'''
@@ -44,7 +46,8 @@ class UserLogin(Resource):
 		user = get_user(email)
 		if user is None:
 			return make_response(jsonify(
-				{"message": "Your account does not exist! Please register"}), 401)
+				{"message": "Your account does not exist! Please register"}),
+				 401)
 
 		elif not safe_str_cmp(password, user['password']):
 			return make_response(jsonify(
