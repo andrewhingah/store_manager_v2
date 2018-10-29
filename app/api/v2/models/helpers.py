@@ -9,7 +9,7 @@ cur = db.cursor
 
 
 def insert_user(users):
-    cur.execute("""INSERT INTO users(name,email,password) VALUES('%s', '%s', '%s');"""%(
+    cur.execute("""INSERT INTO users(name, email, password) VALUES('%s', '%s', '%s');"""%(
         users.name,
         users.email,
         users.password))
@@ -24,10 +24,13 @@ def get_user(email):
     return user
 
 def create_product(products):
-    cur.execute("""INSERT INTO products(name,quantity,price,category,date_posted,user_id) VALUES(
-        '%s','%s','%s','%s', now(), '%s')"""%(
-        questions.question,
-        questions.user_id))
+    cur.execute("""INSERT INTO products(category, name, quantity, price, date_created, user_id) VALUES(
+        '%s','%s','%s','%s', now(), '%s') """%(
+        products.category,
+        products.name,
+        products.quantity,
+        products.price,
+        products.user_id))
     conn.commit()
 
 def get_products():
@@ -43,19 +46,19 @@ def get_products():
 
 def get_product(id):
     cur.execute("SELECT * FROM PRODUCTS WHERE id = %s", (id,))
-    question = cur.fetchone()
+    product = cur.fetchone()
     if product is None:
         return None
     conn.commit()
     return product
 
 def edit_product(id, product):
-    cur.execute("UPDATE products SET name = %s, quantity = %s, price = %s, category = %s, date_posted = %s WHERE id = %s", (
-        question['name'],
-        question['quantity'],
-        question['price'],
-        question['category'],
-        question['date_posted'],
+    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_posted = %s WHERE id = %s", (
+        product['category'],
+        product['name'],
+        product['quantity'],
+        product['price'],
+        product['date_posted'],
         id))
     conn.commit()
 

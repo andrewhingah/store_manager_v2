@@ -2,12 +2,11 @@
 from app.api.v2.models import helpers
 
 class User:
-	'''Class represents operations related to products'''
+	'''Class represents operations related to pusers'''
 
-	def __init__(self, name, email, username, password):
+	def __init__(self, name="", email="", password=""):
 		self.name = name
 		self.email = email
-		self.username = username
 		self.password = password
 
 
