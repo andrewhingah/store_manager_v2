@@ -18,13 +18,12 @@ class UserRegistration(Resource):
 		data = request.get_json()
 		name = data['name']
 		email = data['email']
-		username = data['username']
-		password = data['password']
+		password= data['password']
 
 		user = get_user(email)
 
 		if user is None:
-			user = User(name, email, username, password)
+			user = User(name=name, email=email, password=password)
 			user.signup()
 
 			return make_response(jsonify(
