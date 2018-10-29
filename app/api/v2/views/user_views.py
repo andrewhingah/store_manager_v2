@@ -8,14 +8,18 @@ from app.api.v2.models.helpers import insert_user,get_user
 
 from app.api.v2.models.user_model import User
 
+# parser = reqparse.RequestParser()
+# parser.add_argument('name')
+# parser.add_argument('email')
+# parser.add_argument('password')
 
 class UserRegistration(Resource):
-	"""All products class"""
+	"""Registers a new user"""
 
 	def post(self):
 		"""Register a new user"""
 
-		data = request.get_json()
+		data = request.get_json(force = True)
 		name = data['name']
 		email = data['email']
 		password= data['password']
@@ -26,13 +30,9 @@ class UserRegistration(Resource):
 			user = User(name=name, email=email, password=password)
 			user.signup()
 
-			return make_response(jsonify(
-				{"message":"User created!",
-				"user":user.__dict__}
-				), 201)
+			return {"message":"User created!","user":user.__dict__}, 201
 		else:
-			return make_response(jsonify(
-				{'message':'Email already exists.'}), 202)
+			return {'message':'Email already exists.'}, 202
 
 class UserLogin(Resource):
 	'''login a registered user'''
