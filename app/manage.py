@@ -22,29 +22,29 @@ def migrate():
 
     cur.execute("""CREATE TABLE IF NOT EXISTS users(
     	id serial PRIMARY KEY,
-    	name varchar,
-    	email varchar UNIQUE,
-        username varchar,
+        name varchar,
+        email varchar UNIQUE,
     	password varchar
     	);""")
 
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
         id serial PRIMARY KEY,
         name varchar,
+        category varchar,
         quantity numeric NOT NULL,
         price numeric NOT NULL,
-        date_posted TIMESTAMP,
-        user_id INT,
+        date_created TIMESTAMP,
+        user_id INT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
         );""")
 
     cur.execute("""CREATE TABLE IF NOT EXISTS sales(
         id serial PRIMARY KEY,
-        product_id INT,
+        product_id INT NOT NULL,
+        category varchar,
         quantity numeric NOT NULL,
         price numeric NOT NULL,
-        date_posted TIMESTAMP,
-        category varchar,
+        date_posted TIMESTAMP,  
         FOREIGN KEY (product_id) REFERENCES products(id)
         );""")
     
