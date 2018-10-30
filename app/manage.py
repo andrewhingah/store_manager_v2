@@ -28,9 +28,9 @@ def migrate():
         role varchar
     	);""")
 
-    cur.execute(
-        """INSERT INTO users (name, email, password, role) VALUES(
-        'Fatuma Musa','fatumamusa@admin.com','Fatuma12@#','admin') ON CONFLICT(email) DO NOTHING;""")
+    # cur.execute(
+    #     """INSERT INTO users (name, email, password, role) VALUES(
+    #     'Fatuma Musa','fatumamusa@admin.com','Fatuma12@#','admin') ON CONFLICT(email) DO NOTHING;""")
 
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
         id serial PRIMARY KEY,

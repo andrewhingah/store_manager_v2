@@ -18,6 +18,7 @@ class BaseTestCase(unittest.TestCase):
     
         self.client = self.app.test_client()
         self.checker = self.app.test_client()
+        self.attendant = self.app.test_client()
 
         self.users = {
         'name':'andrew hinga',
@@ -25,13 +26,12 @@ class BaseTestCase(unittest.TestCase):
         'password': '1234',
         'role': 'normal'
         }
-        self.users_login = {
+        self.user_login = {
         'email': 'andrewhinga5@gmail.com',
-        'password': '1234',
-        'role': 'normal'
+        'password': '1234'
         }
 
-        self.default_user = {
+        self.att_user = {
         'name': 'john terry',
         'email': 'john@gmail.com',
         'password': '1881',
@@ -42,7 +42,7 @@ class BaseTestCase(unittest.TestCase):
         'name':'andrew hinga',
         'email': 'andrewhinga5@gmail.com',
         'password': '1234',
-        'role': 'normal'
+        'role': 'admin'
         }
 
         self.new_user = {
@@ -73,11 +73,8 @@ class BaseTestCase(unittest.TestCase):
         # create an authenticated user
         self.client.post('/api/v2/auth/signup', data=json.dumps(self.user), headers=self.header)
 
-
-     
-
         # login the user
-        response = self.client.post("/api/v2/auth/login", data=json.dumps(self.users_login), headers=self.header)
+        response = self.client.post("/api/v2/auth/login", data=json.dumps(self.user_login), headers=self.header)
         # create the authentication headers
         self.authHeaders = {"content-type":"application/json"}
 
@@ -86,6 +83,20 @@ class BaseTestCase(unittest.TestCase):
 
         self.authHeaders['Authorization'] = 'Bearer '+result['token']
 
+        # create an normal attendant account
+        self.attendant.post('/api/v2/auth/signup', data=json.dumps(self.att_user), headers=self.header)
+
+
+        # login the store attendant
+        res2 = self.attendant.post("/api/v2/auth/login", data=json.dumps(self.att_user), headers=self.header)
+        # create the authentication headers
+        self.attHeaders = {"content-type":"application/json"}
+
+        # put the bearer token in the header
+        result2 = json.loads(res2.data.decode())
+
+        self.attHeaders['Authorization'] = 'Bearer '+result2['token']
+
 
 
 
@@ -93,7 +104,7 @@ class UsersTestCase(BaseTestCase):
     """This class represents Users tests."""
 
     def test_signup_user_with_existing_email(self):
-        data = self.users
+        data = self.user
         response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.header)
 
@@ -145,20 +156,8 @@ class UsersTestCase(BaseTestCase):
             "Your account does not exist! Please register")
         self.assertEqual(response.status_code, 401)
 
-    def test_create_new_product(self):
-        '''test admin can create a new product'''
 
-        response = self.client.post(self.p_url,
-            data=json.dumps(self.new_product), headers={
-            'content_type':"application/json",
-            'authorization': self.authHeaders['Authorization']
-            })
-
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(result['message'], 'product added successfully')
-
-
-    def test_create_new_product(self):
+    def test_admin_create_new_product(self):
         '''test admin can create a new product'''
 
         response = self.client.post(self.p_url,
@@ -170,12 +169,18 @@ class UsersTestCase(BaseTestCase):
 
 
     def test_get_all_products(self):
-        '''test user can get all available products'''
+        '''test admin can get all available products'''
         response = self.client.get(self.p_url, headers=self.authHeaders)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], "success")
 
+    def test_attendant_cannot_create_new_product(self):
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, '403 FORBIDDEN')
+        self.assertEqual(result["message"], "You don't have access to this page")
 
     def tearDown(self):
         reset_migrations()
