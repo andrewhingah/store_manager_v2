@@ -24,8 +24,13 @@ def migrate():
     	id serial PRIMARY KEY,
         name varchar,
         email varchar UNIQUE,
-    	password varchar
+    	password varchar,
+        role varchar
     	);""")
+
+    cur.execute(
+        """INSERT INTO users (name, email, password, role) VALUES(
+        'Fatuma Musa','fatumamusa@admin.com','Fatuma12@#','admin') ON CONFLICT(email) DO NOTHING;""")
 
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
         id serial PRIMARY KEY,

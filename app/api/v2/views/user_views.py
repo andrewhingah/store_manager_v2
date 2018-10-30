@@ -8,10 +8,6 @@ from app.api.v2.models.helpers import insert_user,get_user
 
 from app.api.v2.models.user_model import User
 
-# parser = reqparse.RequestParser()
-# parser.add_argument('name')
-# parser.add_argument('email')
-# parser.add_argument('password')
 
 class UserRegistration(Resource):
 	"""Registers a new user"""
@@ -23,11 +19,12 @@ class UserRegistration(Resource):
 		name = data.get('name')
 		email = data.get('email')
 		password= data.get('password')
+		role= data.get('role')
 
 		user = get_user(email)
 
 		if user is None:
-			user = User(name=name, email=email, password=password)
+			user = User(name=name, email=email, password=password, role=role)
 			user.signup()
 
 			return {"message":"User created!","user":user.__dict__}, 201
