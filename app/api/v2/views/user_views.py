@@ -20,9 +20,9 @@ class UserRegistration(Resource):
 		"""Register a new user"""
 
 		data = request.get_json(force = True)
-		name = data['name']
-		email = data['email']
-		password= data['password']
+		name = data.get('name')
+		email = data.get('email')
+		password= data.get('password')
 
 		user = get_user(email)
 
@@ -39,8 +39,8 @@ class UserLogin(Resource):
 	def post(self):
 
 		data = request.get_json()
-		email = data['email']
-		password = data['password']
+		email = data.get('email')
+		password = data.get('password')
 
 		user = get_user(email)
 		if user is None:
