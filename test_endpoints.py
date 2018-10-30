@@ -176,11 +176,20 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(result['message'], "success")
 
     def test_attendant_cannot_create_new_product(self):
+        '''test a normal attendant cannot create a new product'''
         response = self.client.post(self.p_url,
             data=json.dumps(self.new_product), headers=self.attHeaders)
         result = json.loads(response.data.decode())
         self.assertEqual(response.status, '403 FORBIDDEN')
         self.assertEqual(result["message"], "You don't have access to this page")
+
+    def test_get_single_product_by_id(self):
+        '''test get a single product by id'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+
+        res_2 = self.client.get('api/v2/products/1')
+        self.assertEqual(res_2.status_code, 200)
 
     def tearDown(self):
         reset_migrations()
