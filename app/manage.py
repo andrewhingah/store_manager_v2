@@ -28,16 +28,12 @@ def migrate():
         role varchar
     	);""")
 
-    # cur.execute(
-    #     """INSERT INTO users (name, email, password, role) VALUES(
-    #     'Fatuma Musa','fatumamusa@admin.com','Fatuma12@#','admin') ON CONFLICT(email) DO NOTHING;""")
-
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
         id serial PRIMARY KEY,
         name varchar,
         category varchar,
-        quantity numeric NOT NULL,
-        price numeric NOT NULL,
+        quantity INT NOT NULL,
+        price INT NOT NULL,
         date_created TIMESTAMP,
         user_id INT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
