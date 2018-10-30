@@ -39,6 +39,8 @@ class AllProducts(Resource):
 		"""posts a single product"""
 		email = get_jwt_identity()
 		user = get_user(email)
+		if user['role'] != 'admin':
+			return {"message": "You don't have access to this page"}, 403
 		
 		args = parser.parse_args()
 		category = args['category']
