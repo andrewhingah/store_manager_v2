@@ -22,29 +22,34 @@ class BaseTestCase(unittest.TestCase):
         self.users = {
         'name':'andrew hinga',
         'email': 'andrewhinga5@gmail.com',
-        'password': '1234'
+        'password': '1234',
+        'role': 'normal'
         }
         self.users_login = {
         'email': 'andrewhinga5@gmail.com',
-        'password': '1234'
+        'password': '1234',
+        'role': 'normal'
         }
 
         self.default_user = {
         'name': 'john terry',
         'email': 'john@gmail.com',
-        'password': '1881'
+        'password': '1881',
+        'role': 'normal'
         }
 
         self.user = {
         'name':'andrew hinga',
         'email': 'andrewhinga5@gmail.com',
-        'password': '1234'
+        'password': '1234',
+        'role': 'normal'
         }
 
         self.new_user = {
         "name": "John Kamau",
         "email": "johnkamau@gmail.com",
-        "password": "kamau_12"
+        "password": "kamau_12",
+        'role': "normal"
         }
 
         self.bad_user = {
