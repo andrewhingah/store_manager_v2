@@ -35,7 +35,7 @@ def create_product(products):
     conn.commit()
 
 def get_products():
-    cur.execute("SELECT * FROM PRODUCTS")
+    cur.execute("SELECT * FROM products")
     products = cur.fetchall()
     rows = []
     for row in products:
@@ -46,7 +46,7 @@ def get_products():
     return rows
 
 def get_product(id):
-    cur.execute("SELECT * FROM PRODUCTS WHERE id = %s", (id,))
+    cur.execute("SELECT * FROM products WHERE id = %s", (id,))
     product = cur.fetchone()
     if product is None:
         return None

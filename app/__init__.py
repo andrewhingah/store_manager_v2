@@ -1,6 +1,6 @@
 
-from flask_jwt_extended import JWTManager
 from flask import Flask, Blueprint
+from flask_jwt_extended import JWTManager
 
 
 from app.db_con import Database
