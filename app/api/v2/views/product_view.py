@@ -19,7 +19,7 @@ parser.add_argument('price')
 
 class AllProducts(Resource):
 	"""All products class"""
-	# @jwt_required
+	@jwt_required
 	def get(self):
 		"""gets all products"""
 		products = get_products()

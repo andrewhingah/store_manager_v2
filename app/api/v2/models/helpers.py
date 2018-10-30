@@ -7,13 +7,14 @@ from app import db
 conn = db.conn
 cur = db.cursor
 
-
 def insert_user(users):
-    cur.execute("""INSERT INTO users(name, email, password) VALUES('%s', '%s', '%s');"""%(
+    cur.execute("""INSERT INTO users(name, email, password, role) VALUES('%s', '%s','%s','%s');"""%(
         users.name,
         users.email,
-        users.password))
+        users.password,
+        users.role))
     conn.commit()
+
 
 def get_user(email):
     cur.execute("SELECT * FROM users WHERE email = %s", (email,))

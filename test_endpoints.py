@@ -17,25 +17,39 @@ class BaseTestCase(unittest.TestCase):
         migrate()
     
         self.client = self.app.test_client()
+        self.checker = self.app.test_client()
 
         self.users = {
         'name':'andrew hinga',
         'email': 'andrewhinga5@gmail.com',
-        'username': 'andrew5',
-        'password': '1234'
+        'password': '1234',
+        'role': 'normal'
+        }
+        self.users_login = {
+        'email': 'andrewhinga5@gmail.com',
+        'password': '1234',
+        'role': 'normal'
         }
 
-        self.new_user = {
+        self.default_user = {
         'name': 'john terry',
         'email': 'john@gmail.com',
-        'username':'john',
-        'password': '1881'
+        'password': '1881',
+        'role': 'normal'
         }
 
         self.user = {
-        'email': 'henry@gmail.com',
-        'username': 'henry',
-        'password': 'password'
+        'name':'andrew hinga',
+        'email': 'andrewhinga5@gmail.com',
+        'password': '1234',
+        'role': 'normal'
+        }
+
+        self.new_user = {
+        "name": "John Kamau",
+        "email": "johnkamau@gmail.com",
+        "password": "kamau_12",
+        'role': "normal"
         }
 
         self.bad_user = {
@@ -49,46 +63,48 @@ class BaseTestCase(unittest.TestCase):
         "price": 55000
         }
 
-
-        self.header = {"Content-Type": "application/json"}
-
         self.s_url = 'api/v2/auth/signup' #signup url
         self.l_url = 'api/v2/auth/login' #login url
         self.p_url = 'api/v2/products' #products url
 
-    def register_user(self, name='', email='', password=''):
-        user_data = self.users
-        return self.client.post(self.s_url, data=user_data)
+        self.header = {"content-type": "application/json"}
 
-    def login_user(self, email='', password=''):
-        user_data = self.users
-        response = self.client.post(self.l_url, data=user_data)
-        return response
+
+        # create an authenticated user
+        self.client.post('/api/v2/auth/signup', data=json.dumps(self.user), headers=self.header)
+
+
+     
+
+        # login the user
+        response = self.client.post("/api/v2/auth/login", data=json.dumps(self.users_login), headers=self.header)
+        # create the authentication headers
+        self.authHeaders = {"content-type":"application/json"}
+
+        # put the bearer token in the header
+        result = json.loads(response.data.decode())
+
+        self.authHeaders['Authorization'] = 'Bearer '+result['token']
+
 
 
 
 class UsersTestCase(BaseTestCase): 
     """This class represents Users tests."""
 
-        
     def test_signup_user_with_existing_email(self):
-        """Test to register user with existing email."""
         data = self.users
-        res1 = self.client.post(self.s_url,
+        response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.header)
 
-        res2 = self.client.post(self.s_url,
-            data=json.dumps(data), headers=self.header)
+        result = json.loads(response.data.decode())
 
-        result2 = json.loads(res2.data.decode())
-
-        self.assertEqual(result2['message'], 'Email already exists.')
-        self.assertEqual(res2.status_code, 202)
+        self.assertEqual(result['message'], 'Email already exists.')
 
     def test_signup_new_user(self):
         """Test to register new user."""
         data = self.new_user
-        response = self.client.post(self.s_url,
+        response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.header)
 
         result = json.loads(response.data.decode())
@@ -100,13 +116,13 @@ class UsersTestCase(BaseTestCase):
     def test_signin_user(self):
         """Test user sign in to their account."""
         data = self.new_user
-        response = self.client.post(self.s_url,
+        response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.header)
 
 
         self.assertEqual(response.status_code, 201)
         
-        res = self.client.post(self.l_url,
+        res = self.checker.post(self.l_url,
             data=json.dumps(data), headers=self.header)
 
         result = json.loads(res.data.decode())
@@ -118,7 +134,7 @@ class UsersTestCase(BaseTestCase):
     def test_signin_non_registered_user(self):
         """Test signing in a non-registered user."""
         data = self.new_user
-        response = self.client.post(self.l_url,
+        response = self.checker.post(self.l_url,
             data=json.dumps(data), headers=self.header)
 
         result = json.loads(response.data.decode())
@@ -127,40 +143,35 @@ class UsersTestCase(BaseTestCase):
         # and an error status code 401(Unauthorized)
         self.assertEqual(result['message'],
             "Your account does not exist! Please register")
-
         self.assertEqual(response.status_code, 401)
 
     def test_create_new_product(self):
         '''test admin can create a new product'''
-        self.register_user()
-        result = self.login_user()
-        access_token = json.loads(result.data.decode())['token']
 
         response = self.client.post(self.p_url,
-            data=self.new_product, headers=dict(Authorization="Bearer " + access_token))
+            data=json.dumps(self.new_product), headers={
+            'content_type':"application/json",
+            'authorization': self.authHeaders['Authorization']
+            })
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(result['message'], 'product added successfully')
 
-    def test_create_product_with_similar_name(self):
-        '''test admin is notified when creating an already existing product'''
-        self.register_user()
-        result = self.login_user()
-        access_token = json.loads(result.data.decode())['token']
 
-        data = self.new_product
-        res1 = self.client.post(self.p_url,
-            data = json.dumps(data), headers = self.header)
-        res2 = self.client.post(self.p_url,
-            data = json.dumps(data), headers = self.header)
-        result = json.loads(res2.data.decode())
-        self.assertEqual(res2.status_code, 400)
-        self.assertEqual(result['message'],
-            'product already in stock, consider updating the quantity')
+    def test_create_new_product(self):
+        '''test admin can create a new product'''
+
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result['message'], 'Product created successfully')
+
 
     def test_get_all_products(self):
         '''test user can get all available products'''
-        response = self.client.get(self.p_url)
+        response = self.client.get(self.p_url, headers=self.authHeaders)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], "success")
