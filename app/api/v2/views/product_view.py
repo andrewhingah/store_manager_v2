@@ -8,7 +8,7 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 from app.api.v2.models.product_model import Product
 # from ..utils.validate import verify_name_details
-from app.api.v2.models.helpers import get_products, get_user
+from app.api.v2.models.helpers import get_products, get_product, get_user
 
 
 parser = reqparse.RequestParser()
@@ -75,3 +75,13 @@ class AllProducts(Resource):
 				return jsonify ({"message": "No products available"}), 404
 
 			return jsonify({"message": "successfully", "Products": products}), 200
+
+class SingleProduct(Resource):
+	'''This class has all operations related to a single product'''
+	def get(self, id):
+		email = get_jwt_identity()
+		user = get_user(email)
+		product = get_product(id)
+		if product is None:
+			return make_response(jsonify({"message": "Product unavailable"}), 404)
+		return make_response(jsonify({"message": "success", "Product": product}), 200)

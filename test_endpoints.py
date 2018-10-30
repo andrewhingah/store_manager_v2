@@ -187,8 +187,11 @@ class UsersTestCase(BaseTestCase):
         '''test get a single product by id'''
         res_1 = self.client.post(self.p_url,
             data=json.dumps(self.new_product), headers=self.authHeaders)
+        self.assertEqual(res_1.status_code, 201)
+        print (res_1.data)
 
         res_2 = self.client.get('api/v2/products/1')
+        print (res_2.data)
         self.assertEqual(res_2.status_code, 200)
 
     def tearDown(self):
