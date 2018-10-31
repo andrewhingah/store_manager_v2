@@ -1,0 +1,170 @@
+# StoreManager
+
+Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
+
+## Required Features
+
+1. Store attendant can search and add products to buyer’s cart.
+2. Store attendant can see his/her sale records but can’t modify them.
+3. App should show available products, quantity and price.
+4. Store owner can see sales and can filter by attendants.
+5. Store owner can add, modify and delete products.
+
+The following header will be required in making API calls
+
++ Content-Type: application/json
+
+After authentication, the rest of the endpoints will require to include the bearer token that is sent with the login reponse.
+
+Authentication: Bearer [Token]
+
+## Login an Admin [/auth/login]
+
+### Sign In [POST]
+
+The user can  login with their email and password
+
++ Request (application/json)
+        
+        {
+            "email": "andrewhinga5@gmail.com",
+            "password": "A@#@#@#12"
+        }
+        
++ Response 200 (application/json)
+        {
+            "message": "Logged in successfully!",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mjg1NTAzMjgsIm5iZiI6MTUyODU1MDMyOCwianRpIjoiOTI5MWM1OGUtZGIzYy00ODczLWI0MWUtYWE5NjdhZDdhNGYxIiwiZXhwIjoxNTI4NTUxMjI4LCJpZGVudGl0eSI6ImJyeW8iLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.rKyae63Dyw_Ta-9ZblOyY7qgrnEQNy0-aTSVmu0rBKs"
+        }
+
+### Sign Up [POST]
+
+Where a an admin can create store attendants accounts on the API
+
++ Request (application/json)
+
+        {
+            "name": "James Mwangi",
+            "email": "jamesmwangi@store.com",
+            "password": "123@_james"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            user: 
+
+    + Body
+
+            {
+                "message": "User created!"
+            }
+
+
+
+## Admin StoreManager [/products]
+
+#### Admin can add a new product [POST]
+
+The authenticatd admin can add a new product
+
++ Request(application/json)
+
+{
+	"category": "foods",
+	"name": "chicken",
+	"quantity": 33,
+	"price": 1500
+	
+}
+
++ Response 201 (application/json)
+
+{
+    "message": "Product created successfully",
+    "product": {
+        "category": "foods",
+        "date_created": "Wed, 31 Oct 2018 23:56:43 GMT",
+        "name": "chicken",
+        "price": "1500",
+        "quantity": "33",
+        "user_id": 1
+    },
+    "status": "created"
+}
+
+### Attendant/Admin can get all products [GET]
+
+A admin/attendant can view all available products
+
++ Response 200 (application/json)
+
+{
+    "message": "success",
+    "products": [
+        {
+            "category": "foods",
+            "date_created": "Wed, 31 Oct 2018 09:38:44 GMT",
+            "id": 1,
+            "name": "Coffee Mocha",
+            "price": 500,
+            "quantity": 29,
+            "user_id": 1
+        },
+        {
+            "category": "foods",
+            "date_created": "Wed, 31 Oct 2018 15:22:56 GMT",
+            "id": 2,
+            "name": "Capuccino",
+            "price": 650,
+            "quantity": 15,
+            "user_id": 1
+        },
+        {
+            "category": "foods",
+            "date_created": "Wed, 31 Oct 2018 23:56:43 GMT",
+            "id": 3,
+            "name": "chicken",
+            "price": 1500,
+            "quantity": 33,
+            "user_id": 1
+        }
+    ],
+    "status": "ok"
+}
+
+### Admin/Attendant can get a single product [GET]
+
+A admin/attendant can view a particular product's details
+
++ Parameters
+    + product_id(integer) - Id of the product.
+
++ Response 200 (application/json)
+
+{
+    "Product": {
+        "category": "foods",
+        "date_created": "Wed, 31 Oct 2018 23:56:43 GMT",
+        "id": 3,
+        "name": "chicken",
+        "price": 1500,
+        "quantity": 33,
+        "user_id": 1
+    },
+    "message": "success"
+}
+
+### Admin can delete a specific product [DELETE]
+
+A admin can delete a particular product by id
+
++ Parameters
+    + product_id(integer) - Id of the product.
+
++ Response 200 (application/json)
+
+{
+    "message": "product has been deleted"
+}

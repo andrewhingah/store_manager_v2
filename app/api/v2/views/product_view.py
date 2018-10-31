@@ -8,7 +8,7 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 from app.api.v2.models.product_model import Product
 # from ..utils.validate import verify_name_details
-from app.api.v2.models.helpers import get_products, get_product, get_user
+from app.api.v2.models.helpers import get_products, get_product, delete_product, get_user
 
 
 parser = reqparse.RequestParser()
@@ -85,3 +85,18 @@ class SingleProduct(Resource):
 		if product is None:
 			return make_response(jsonify({"message": "Product unavailable"}), 404)
 		return make_response(jsonify({"message": "success", "Product": product}), 200)
+
+	@jwt_required
+	def delete(self, id):
+		email = get_jwt_identity()
+		user = get_user(email)
+
+		if user['role'] != "admin":
+			return {"message": "You are not permitted to perform this action"}
+
+		product = get_product(id)
+		if product is None:
+			return jsonify({"message": "You requested to delete an unavailable product"})
+
+		delete_product(id)
+		return jsonify({"message": "product has been deleted"})
