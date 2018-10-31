@@ -76,10 +76,10 @@ class BaseTestCase(unittest.TestCase):
         self.header = {"content-type": "application/json"}
 
 
-        # create an authenticated user
+        # create an admin
         self.client.post('/api/v2/auth/signup', data=json.dumps(self.user), headers=self.header)
 
-        # login the user
+        # login the admin
         response = self.client.post("/api/v2/auth/login", data=json.dumps(self.user_login), headers=self.header)
         # create the authentication headers
         self.authHeaders = {"content-type":"application/json"}
@@ -220,6 +220,13 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(res_2.data.decode())
         self.assertEqual(res_2.status, 201)
         self.assertEqual(result["message"], "created")
+
+    def test_attendant_create_sale_for_non_existing_product(self):
+        response = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, 404)
+        self.assertEqual(result["message"], "Product is unavailable")
 
 
 
