@@ -208,20 +208,18 @@ class UsersTestCase(BaseTestCase):
     #     result = json.loads(response.data.decode())
     #     self.assertEqual(result['message'], 'success')
 
-    # def test_attendant_create_new_sale(self):
-    #     '''test attendant can create a sale record'''
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     result = json.loads(res_1.data.decode())
-    #     self.assertEqual(res_1.status_code, 201)
+    def test_attendant_create_new_sale(self):
+        '''test attendant can create a sale record'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(res_1.data.decode())
+        self.assertEqual(res_1.status_code, 201)
 
-    #     res_2 = self.client.get(self.p_url, headers=self.authHeaders)
-
-    #     res_3 = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(res_3.status, 201)
-    #     self.assertEqual(result["message"], "created")
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
+        self.assertEqual(result["message"], "created")
 
     # def test_attendant_create_sale_for_non_existing_product(self):
     #     response = self.client.post('api/v2/sales',
