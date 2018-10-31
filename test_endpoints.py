@@ -228,6 +228,30 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(response.status, 404)
         self.assertEqual(result["message"], "Product is unavailable")
 
+    def test_get_unavailable_single_sale(self):
+        response = self.client.get('api/v2/sales/1',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, 404)
+        self.assertEqual(result["message"], "Sale record unavailable")
+
+    def test_get_single_sale(self):
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        self.assertEqual(res_1.status_code, 201)
+
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
+        self.assertEqual(result["message"], "created")
+
+        re_3 = self.client.get('api/v2/sales/1',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_3.data.decode())
+        self.assertEqual(res_3.status, 200)
+        self.assertEqual(result["message"], "success")
+
 
 
     def tearDown(self):
