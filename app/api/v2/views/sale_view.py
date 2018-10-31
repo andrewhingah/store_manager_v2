@@ -5,7 +5,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity, get_raw_jwt)
 
 from app.api.v2.models.product_model import Sale
-from app.api.v2.models.helpers import get_product, get_sales, get_sale, get_user
+from app.api.v2.models.helpers import get_product, get_sales, get_sale, get_user, decrease_quantity
 
 
 parser = reqparse.RequestParser()
@@ -35,6 +35,10 @@ class AllSales(Resource):
 			return {"message":"The quantity you want to sell exceeds the available inventory"}
 
 		new_sale = Sale(product_id, quantity, remaining_q, total_price, name, date_created)
+
+		#decrement quantity of product
+		product['quantity'] = remaining_q
+		decrease_quantity(product_id, product)
 
 		new_sale.save()
 

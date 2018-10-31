@@ -63,6 +63,12 @@ def edit_product(id, product):
         id))
     conn.commit()
 
+def decrease_quantity(id, product):
+    cur.execute("UPDATE products SET quantity = %s WHERE id = %s", (
+        product['quantity'],
+        id))
+    conn.commit()
+
 def delete_product(id):
     cur.execute("DELETE FROM products WHERE id = %s", (id,))
     conn.commit()
