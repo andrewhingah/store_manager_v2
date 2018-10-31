@@ -43,3 +43,27 @@ class AllSales(Resource):
 			"status":"created",
 			"product":new_sale.__dict__}
 			), 201)
+
+	def get(self):
+		"""gets all products"""
+		sales = get_sales()
+		if sales is None:
+			return make_response(jsonify(
+				{
+				"message": "No sales available"
+				}))
+		return make_response(jsonify(
+			{
+			"message":"success",
+			"status":"ok",
+			"Sales":sales}), 200)
+
+class SingleSale(Resource):
+	'''class represents operations for one sale record'''
+	def get(self, id):
+		# email = get_jwt_identity()
+		# user = get_user(email)
+		sale_record = get_sale(id)
+		if sale_record is None:
+			return make_response(jsonify({"message": "Sale record unavailable"}), 404)
+		return make_response(jsonify({"message": "success", "Sale": sale_record}), 200)
