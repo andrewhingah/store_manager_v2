@@ -63,6 +63,12 @@ class BaseTestCase(unittest.TestCase):
         "price": 55000
         }
 
+        self.new_sale = {
+
+        "product_id": 1,
+        "quantity": 3
+        }
+
         self.s_url = 'api/v2/auth/signup' #signup url
         self.l_url = 'api/v2/auth/login' #login url
         self.p_url = 'api/v2/products' #products url
@@ -193,6 +199,29 @@ class UsersTestCase(BaseTestCase):
         res_2 = self.client.get('api/v2/products/1')
         print (res_2.data)
         self.assertEqual(res_2.status_code, 200)
+
+    #sales
+
+    def test_get_all_sales(self):
+        '''test that a user can get all sales'''
+        response = self.client.get('api/v2/sales', headers=self.authHeaders)
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result['message'], 'success')
+
+    def test_attendant_create_new_sale(self):
+        '''test attendant can create a sale record'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        self.assertEqual(res_1.status_code, 201)
+
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
+        self.assertEqual(result["message"], "created")
+
+
 
     def tearDown(self):
         reset_migrations()

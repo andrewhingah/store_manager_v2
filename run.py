@@ -6,6 +6,7 @@ app = create_app(os.getenv('APP_SETTINGS'))
 
 
 from app.manage import migrate
+
 migrate()
 
 if __name__ == '__main__':
