@@ -217,8 +217,8 @@ class UsersTestCase(BaseTestCase):
 
         res_2 = self.client.post('api/v2/sales',
             data=json.dumps(self.new_sale), headers=self.attHeaders)
-        result = json.loads(response.data.decode())
-        self.assertEqual(response.status, 201)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
         self.assertEqual(result["message"], "created")
 
 

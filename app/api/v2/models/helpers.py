@@ -66,3 +66,32 @@ def edit_product(id, product):
 def delete_product(id):
     cur.execute("DELETE FROM products WHERE id = %s", (id,))
     conn.commit()
+
+def create_sale(sales):
+    cur.execute("""INSERT INTO sales(product_id, quantity, remaining_q, price, name, date_created) VALUES(
+        '%s','%s','%s','%s', '%s', now()) """%(
+        sales.product_id,
+        sales.quantity,
+        sales.remaining_q,
+        sales.price,
+        sales.name))
+    conn.commit()
+
+def get_sales():
+    cur.execute("SELECT * FROM sales")
+    sales = cur.fetchall()
+    rows = []
+    for row in sales:
+        rows.append(dict(row))
+    if rows is None:
+        return None  
+    conn.commit()
+    return rows
+
+def get_sale(id):
+    cur.execute("SELECT * FROM sales WHERE id = %s", (id,))
+    sale = cur.fetchone()
+    if sale is None:
+        return None
+    conn.commit()
+    return sale
