@@ -44,7 +44,7 @@ def migrate():
         product_id INT NOT NULL,
         quantity INT NOT NULL,
         remaining_q INT NOT NULL,
-        price numeric NOT NULL,
+        price INT NOT NULL,
         name varchar,
         date_created TIMESTAMP,  
         FOREIGN KEY (product_id) REFERENCES products(id)
