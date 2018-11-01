@@ -54,12 +54,12 @@ def get_product(id):
     return product
 
 def edit_product(id, product):
-    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_posted = %s WHERE id = %s", (
+    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_created = %s WHERE id = %s", (
         product['category'],
         product['name'],
         product['quantity'],
         product['price'],
-        product['date_posted'],
+        product['date_created'],
         id))
     conn.commit()
 
