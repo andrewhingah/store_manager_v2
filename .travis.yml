@@ -22,4 +22,4 @@ after_success:
  - coveralls
  - codeclimate-test-reporter
 
-cache: pip    
+cache: pip

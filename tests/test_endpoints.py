@@ -215,12 +215,12 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], 'success')
 
-    # def test_attendant_create_new_sale(self):
-    #     '''test attendant can create a sale record'''
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     result = json.loads(res_1.data.decode())
-    #     self.assertEqual(res_1.status_code, 201)
+    def test_attendant_create_new_sale(self):
+        '''test attendant can create a sale record'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(res_1.data.decode())
+        self.assertEqual(res_1.status_code, 201)
 
     #     res_3 = self.client.get(self.p_url, headers=self.authHeaders)
     #     result2 = json.loads(res_3.data.decode())
