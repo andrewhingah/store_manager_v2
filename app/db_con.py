@@ -1,5 +1,7 @@
-import psycopg2
+"""This module has the db connection"""
+
 import os
+import psycopg2
 from psycopg2.extras import RealDictCursor
 
 

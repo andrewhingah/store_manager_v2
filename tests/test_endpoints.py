@@ -195,18 +195,26 @@ class UsersTestCase(BaseTestCase):
             data=json.dumps(self.new_product), headers=self.authHeaders)
         self.assertEqual(res_1.status_code, 201)
 
-        res_2 = self.client.get('api/v2/products/1', headers=self.authHeaders)
-        data = res_2.get_json
+
+
+        res_2 = self.client.get('api/v2/products', headers=self.authHeaders)
+        result = json.loads(res_2.data.decode())
         self.assertEqual(res_2.status_code, 200)
+        data = result['Product']
+        self.assertEqual(data, {1, 2})
+        return print (result['message'])
+
+        
+        # print(result['product'])
 
     #sales
 
-    # def test_get_all_sales(self):
-    #     '''test that a user can get all sales'''
-    #     response = self.client.get('api/v2/sales', headers=self.authHeaders)
-    #     self.assertEqual(response.status_code, 200)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(result['message'], 'success')
+    def test_get_all_sales(self):
+        '''test that a user can get all sales'''
+        response = self.client.get('api/v2/sales', headers=self.authHeaders)
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result['message'], 'success')
 
     # def test_attendant_create_new_sale(self):
     #     '''test attendant can create a sale record'''
