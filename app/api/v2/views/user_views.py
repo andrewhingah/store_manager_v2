@@ -7,7 +7,7 @@ from werkzeug.security import safe_str_cmp
 from app.api.v2.models.helpers import insert_user,get_user
 
 from app.api.v2.models.user_model import User
-# from app.api.v2.utils.validate import validate_email, validate_all
+from app.api.v2.utils.validate import validate_email, validate_all
 
 
 class UserRegistration(Resource):
@@ -22,8 +22,8 @@ class UserRegistration(Resource):
 		password= data.get('password')
 		role= data.get('role')
 
-		# if validate_all(name, email, password):
-			# return validate_all(name, email, password)
+		if validate_all(name, email, password):
+			return validate_all(name, email, password)
 
 		user = get_user(email)
 
@@ -43,8 +43,8 @@ class UserLogin(Resource):
 		email = data.get('email')
 		password = data.get('password')
 
-		# if validate_email(email):
-			# return validate_email(email)
+		if validate_email(email):
+			return validate_email(email)
 
 		user = get_user(email)
 		if user is None:
