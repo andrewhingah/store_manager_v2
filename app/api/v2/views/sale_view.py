@@ -20,6 +20,10 @@ class AllSales(Resource):
 	@jwt_required
 	def post(self):
 		"""posts a single product"""
+		email = get_jwt_identity()
+		user = get_user(email)
+		if user['role'] != 'normal':
+			return {"message": "You don't have access to this page"}, 403
 		args = parser.parse_args()
 		product_id = args['product_id']
 		quantity = args['quantity']
