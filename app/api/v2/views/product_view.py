@@ -9,13 +9,14 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 from app.api.v2.models.product_model import Product
 
 from app.api.v2.models.helpers import get_user, get_products, get_product, delete_product, edit_product
+from app.api.v2.utils.validate import validate_email, verify_name_details, validate_all
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('category')
-parser.add_argument('name')
-parser.add_argument('quantity')
-parser.add_argument('price')
+parser.add_argument('category', required = True, help = "Category cannot be empty")
+parser.add_argument('name', required = True, help = "Name cannot be empty")
+parser.add_argument('quantity', required = True, help = "Quantity should be an integer")
+parser.add_argument('price', required=True, help="Price cannot be empty")
 
 # data = request.get_json(force = True)
 
@@ -51,6 +52,12 @@ class AllProducts(Resource):
 		price = args['price']
 		date_created = datetime.now()
 		user_id = (user['id'])
+
+		if verify_name_details(category):
+			return verify_name_details(category)
+
+		if verify_name_details(name):
+			return verify_name_details(name)
 
 		newproduct = Product(category, name, quantity, price, date_created, user_id)
 		newproduct.save()
