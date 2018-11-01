@@ -60,7 +60,7 @@ def get_product(id):
 
 def edit_product(id, product):
     '''modify a product details'''
-    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_create = %s WHERE id = %s", (
+    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_created = %s WHERE id = %s", (
         product['category'],
         product['name'],
         product['quantity'],

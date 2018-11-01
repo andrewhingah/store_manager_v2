@@ -1,6 +1,7 @@
 """Create tables, delete from tables"""
 
 def reset_migrations():
+    '''clear tables after tests'''
     from app import db
     conn = db.conn
     cur = db.cursor
@@ -15,6 +16,7 @@ def reset_migrations():
 
 
 def migrate():
+    '''create tables and columns'''
     from app import db
     conn = db.conn
     cur = db.cursor
