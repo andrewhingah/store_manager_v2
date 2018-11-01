@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import (
-	jwt_required, create_access_token, get_jwt_identity, get_raw_jwt)
+	jwt_required, create_access_token, get_jwt_identity, get_raw_jwt, jwt_required)
 from werkzeug.security import safe_str_cmp
 
 from app.api.v2.models.helpers import insert_user,get_user

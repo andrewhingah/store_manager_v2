@@ -1,3 +1,5 @@
+"""This module contains resources for sales"""
+
 from datetime import datetime
 from flask import Flask, jsonify, make_response
 from flask_restful import Api, Resource, reqparse
@@ -65,6 +67,8 @@ class AllSales(Resource):
 class SingleSale(Resource):
 	'''class represents operations for one sale record'''
 	def get(self, id):
+		'''gets single sale by id'''
+
 		# email = get_jwt_identity()
 		# user = get_user(email)
 		sale_record = get_sale(id)
