@@ -60,7 +60,7 @@ class BaseTestCase(unittest.TestCase):
         "category": "electronics",
         "name": "HP Laptop",
         "quantity": 50,
-        "price": 55000
+        "price": 55555
         }
 
         self.new_sale = {
@@ -189,15 +189,15 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(response.status, '403 FORBIDDEN')
         self.assertEqual(result["message"], "You don't have access to this page")
 
-    # def test_get_single_product_by_id(self):
-    #     '''test get a single product by id'''
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     self.assertEqual(res_1.status_code, 201)
+    def test_get_single_product_by_id(self):
+        '''test get a single product by id'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        self.assertEqual(res_1.status_code, 201)
 
-    #     res_2 = self.client.get('api/v2/products', headers=self.authHeaders)
-    
-    #     self.assertEqual(res_2.status_code, 200)
+        res_2 = self.client.get('api/v2/products/1', headers=self.authHeaders)
+        data = res_2.get_json
+        self.assertEqual(res_2.status_code, 200)
 
     #sales
 
@@ -208,18 +208,22 @@ class UsersTestCase(BaseTestCase):
     #     result = json.loads(response.data.decode())
     #     self.assertEqual(result['message'], 'success')
 
-    def test_attendant_create_new_sale(self):
-        '''test attendant can create a sale record'''
-        res_1 = self.client.post(self.p_url,
-            data=json.dumps(self.new_product), headers=self.authHeaders)
-        result = json.loads(res_1.data.decode())
-        self.assertEqual(res_1.status_code, 201)
+    # def test_attendant_create_new_sale(self):
+    #     '''test attendant can create a sale record'''
+    #     res_1 = self.client.post(self.p_url,
+    #         data=json.dumps(self.new_product), headers=self.authHeaders)
+    #     result = json.loads(res_1.data.decode())
+    #     self.assertEqual(res_1.status_code, 201)
 
-        res_2 = self.client.post('api/v2/sales',
-            data=json.dumps(self.new_sale), headers=self.attHeaders)
-        result = json.loads(res_2.data.decode())
-        self.assertEqual(res_2.status, 201)
-        self.assertEqual(result["message"], "created")
+    #     res_3 = self.client.get(self.p_url, headers=self.authHeaders)
+    #     result2 = json.loads(res_3.data.decode())
+    #     self.assertEqual(result['products'])
+
+    #     res_2 = self.client.post('api/v2/sales',
+    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
+    #     result = json.loads(res_2.data.decode())
+    #     self.assertEqual(res_2.status, 201)
+    #     self.assertEqual(result["message"], "created")
 
     # def test_attendant_create_sale_for_non_existing_product(self):
     #     response = self.client.post('api/v2/sales',
