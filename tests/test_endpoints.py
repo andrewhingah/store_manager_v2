@@ -216,53 +216,53 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], 'success')
 
-    # def test_attendant_create_new_sale(self):
-    #     '''test attendant can create a sale record'''
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     result = json.loads(res_1.data.decode())
-    #     self.assertEqual(res_1.status_code, 201)
+    def test_attendant_create_new_sale(self):
+        '''test attendant can create a sale record'''
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(res_1.data.decode())
+        self.assertEqual(res_1.status_code, 201)
 
-    #     res_3 = self.client.get(self.p_url, headers=self.authHeaders)
-    #     result2 = json.loads(res_3.data.decode())
-    #     self.assertEqual(result['products'])
+        res_3 = self.client.get(self.p_url, headers=self.authHeaders)
+        result2 = json.loads(res_3.data.decode())
+        self.assertEqual(result['products'])
 
-    #     res_2 = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(res_2.status, 201)
-    #     self.assertEqual(result["message"], "created")
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
+        self.assertEqual(result["message"], "created")
 
-    # def test_attendant_create_sale_for_non_existing_product(self):
-    #     response = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(response.status, 404)
-    #     self.assertEqual(result["message"], "Product is unavailable")
+    def test_attendant_create_sale_for_non_existing_product(self):
+        response = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, 404)
+        self.assertEqual(result["message"], "Product is unavailable")
 
-    # def test_get_unavailable_single_sale(self):
-    #     response = self.client.get('api/v2/sales/1',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(response.status, 404)
-    #     self.assertEqual(result["message"], "Sale record unavailable")
+    def test_get_unavailable_single_sale(self):
+        response = self.client.get('api/v2/sales/1',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, '404 NOT FOUND')
+        self.assertEqual(result["message"], "Sale record unavailable")
 
-    # def test_get_single_sale(self):
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     self.assertEqual(res_1.status_code, 201)
+    def test_get_single_sale(self):
+        res_1 = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        self.assertEqual(res_1.status_code, 201)
 
-    #     res_2 = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(res_2.status, 201)
-    #     self.assertEqual(result["message"], "created")
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, 201)
+        self.assertEqual(result["message"], "created")
 
-    #     re_3 = self.client.get('api/v2/sales/1',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_3.data.decode())
-    #     self.assertEqual(res_3.status, 200)
-    #     self.assertEqual(result["message"], "success")
+        re_3 = self.client.get('api/v2/sales/1',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(res_3.data.decode())
+        self.assertEqual(res_3.status, 200)
+        self.assertEqual(result["message"], "success")
 
 
 
