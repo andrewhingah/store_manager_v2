@@ -51,7 +51,7 @@ class AllProducts(Resource):
 		quantity = args['quantity']
 		price = args['price']
 		date_created = datetime.now()
-		user_id = (user['id'])
+		# user_id = (user['id'])
 
 		if verify_name_details(category):
 			return verify_name_details(category)
@@ -59,7 +59,7 @@ class AllProducts(Resource):
 		if verify_name_details(name):
 			return verify_name_details(name)
 
-		newproduct = Product(category, name, quantity, price, date_created, user_id)
+		newproduct = Product(category, name, quantity, price, date_created)
 		newproduct.save()
 
 		return make_response(jsonify(

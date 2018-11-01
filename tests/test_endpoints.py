@@ -118,6 +118,7 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(response.data.decode())
 
         self.assertEqual(result['message'], 'Email already exists.')
+        self.assertEqual(response.status_code, 202)
 
     def test_signup_new_user(self):
         """Test to register new user."""
@@ -190,22 +191,19 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(response.status, '403 FORBIDDEN')
         self.assertEqual(result["message"], "You don't have access to this page")
 
-    def test_get_single_product_by_id(self):
-        '''test get a single product by id'''
-        res_1 = self.client.post(self.p_url,
-            data=json.dumps(self.new_product), headers=self.authHeaders)
+    # def test_get_single_product_by_id(self):
+    #     """Test user sign in to their account."""
+    #     data = self.new_product
+    #     response = self.checker.post(self.p_url,
+    #         data=json.dumps(data), headers=self.authHeaders)
+    #     res_2 = self.client.get('api/v2/products/1', headers=self.authHeaders)
+    #     result = json.loads(res_2.data.decode())
+    #     self.assertEqual(result['message'], 'Product unavailable')
+    #     self.assertEqual(response.status_code, 201)
+    #     self.assertEqual(res_2.status_code, 200)
+    #     self.assertEqual(result['message'], 'success')
+
         
-
-
-
-        res_2 = self.client.get('api/v2/products/1', headers=self.authHeaders)
-        result = json.loads(res_2.data.decode())
-        self.assertEqual(res_1.status_code, 201)
-        self.assertEqual(res_2.status_code, 404)
-
-        
-        # print(result['product'])
-
     #sales
 
     def test_get_all_sales(self):
@@ -239,12 +237,12 @@ class UsersTestCase(BaseTestCase):
     #     self.assertEqual(response.status, 404)
     #     self.assertEqual(result["message"], "Product is unavailable")
 
-    # def test_get_unavailable_single_sale(self):
-    #     response = self.client.get('api/v2/sales/1',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(response.status, '404 NOT FOUND')
-    #     self.assertEqual(result["message"], "Sale record unavailable")
+    def test_get_unavailable_single_sale(self):
+        response = self.client.get('api/v2/sales/1',
+            data=json.dumps(self.new_sale), headers=self.attHeaders)
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status, '404 NOT FOUND')
+        self.assertEqual(result["message"], "Sale record unavailable")
 
     # def test_get_single_sale(self):
     #     res_1 = self.client.post(self.p_url,

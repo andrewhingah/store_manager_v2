@@ -8,6 +8,7 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 from app.api.v2.models.product_model import Sale
 from app.api.v2.models.helpers import get_product, get_sales, get_sale, get_user, decrease_quantity
+from app.api.v2.utils.validate import validate_quantity_id
 
 
 parser = reqparse.RequestParser()
@@ -27,6 +28,12 @@ class AllSales(Resource):
 		args = parser.parse_args()
 		product_id = args['product_id']
 		quantity = args['quantity']
+
+		if validate_quantity_id(product_id):
+			return validate_quantity_id(product_id)
+
+		# if not isinstance(product_id, int):
+		# 	return {"message": "Only integers allowed"}
 
 		product = get_product(product_id)
 		if product is None:
