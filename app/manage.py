@@ -47,8 +47,9 @@ def migrate():
         remaining_q INT NOT NULL,
         price INT NOT NULL,
         name varchar,
-        date_created TIMESTAMP,  
-        FOREIGN KEY (product_id) REFERENCES products(id)
+        date_created TIMESTAMP
+        -- product_id INT NOT NULL 
+        -- FOREIGN KEY (product_id) REFERENCES products(id)
         );""")
     
     print("Database connected")
