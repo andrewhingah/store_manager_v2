@@ -6,3 +6,5 @@ __pycache__
 .venv
 env/
 venv/
+
+test_endpoints.py
