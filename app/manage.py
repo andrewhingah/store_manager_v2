@@ -1,5 +1,4 @@
-
-import os
+"""Create tables, delete from tables"""
 
 def reset_migrations():
     from app import db

@@ -8,6 +8,7 @@ conn = db.conn
 cur = db.cursor
 
 def insert_user(users):
+    '''save new user to db'''
     cur.execute("""INSERT INTO users(name, email, password, role) VALUES('%s', '%s','%s','%s');"""%(
         users.name,
         users.email,
@@ -17,6 +18,7 @@ def insert_user(users):
 
 
 def get_user(email):
+    '''retrieve a single user from db'''
     cur.execute("SELECT * FROM users WHERE email = %s", (email,))
     user = cur.fetchone()
     if user is None:
@@ -25,6 +27,7 @@ def get_user(email):
     return user
 
 def create_product(products):
+    '''save new product to db'''
     cur.execute("""INSERT INTO products(category, name, quantity, price, date_created, user_id) VALUES(
         '%s','%s','%s','%s', now(), '%s') """%(
         products.category,
@@ -35,6 +38,7 @@ def create_product(products):
     conn.commit()
 
 def get_products():
+    '''fetch products from db'''
     cur.execute("SELECT * FROM products")
     products = cur.fetchall()
     rows = []
@@ -46,6 +50,7 @@ def get_products():
     return rows
 
 def get_product(id):
+    '''fetch single product from db'''
     cur.execute("SELECT * FROM products WHERE id = %s", (id,))
     product = cur.fetchone()
     if product is None:
@@ -54,26 +59,30 @@ def get_product(id):
     return product
 
 def edit_product(id, product):
-    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_posted = %s WHERE id = %s", (
+    '''modify a product details'''
+    cur.execute("UPDATE products SET category = %s, name = %s, quantity = %s, price = %s, date_create = %s WHERE id = %s", (
         product['category'],
         product['name'],
         product['quantity'],
         product['price'],
-        product['date_posted'],
+        product['date_created'],
         id))
     conn.commit()
 
 def decrease_quantity(id, product):
+    '''decrease quantity of product after sale'''
     cur.execute("UPDATE products SET quantity = %s WHERE id = %s", (
         product['quantity'],
         id))
     conn.commit()
 
 def delete_product(id):
+    '''delete product from db'''
     cur.execute("DELETE FROM products WHERE id = %s", (id,))
     conn.commit()
 
 def create_sale(sales):
+    '''save a sale record to db'''
     cur.execute("""INSERT INTO sales(product_id, quantity, remaining_q, price, name, date_created) VALUES(
         '%s','%s','%s','%s', '%s', now()) """%(
         sales.product_id,
@@ -84,6 +93,7 @@ def create_sale(sales):
     conn.commit()
 
 def get_sales():
+    '''fetch sales from db'''
     cur.execute("SELECT * FROM sales")
     sales = cur.fetchall()
     rows = []
@@ -95,6 +105,7 @@ def get_sales():
     return rows
 
 def get_sale(id):
+    '''fetch single sale from db'''
     cur.execute("SELECT * FROM sales WHERE id = %s", (id,))
     sale = cur.fetchone()
     if sale is None:

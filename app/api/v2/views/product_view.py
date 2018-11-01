@@ -1,14 +1,14 @@
-from datetime import datetime
-from flask import Flask, jsonify, make_response
-from flask_restful import Api, Resource, reqparse
+"""This module contains resources for products"""
 
-# from flask_jwt import JWT, jwt_required
+from datetime import datetime
+from flask import Flask, jsonify, make_response, request
+from flask_restful import Api, Resource, reqparse
 
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity, get_raw_jwt)
 
 from app.api.v2.models.product_model import Product
-# from ..utils.validate import verify_name_details
-from app.api.v2.models.helpers import get_products, get_product, delete_product, get_user
+
+from app.api.v2.models.helpers import get_user, get_products, get_product, delete_product, edit_product
 
 
 parser = reqparse.RequestParser()
@@ -16,6 +16,8 @@ parser.add_argument('category')
 parser.add_argument('name')
 parser.add_argument('quantity')
 parser.add_argument('price')
+
+# data = request.get_json(force = True)
 
 class AllProducts(Resource):
 	"""All products class"""
@@ -50,12 +52,6 @@ class AllProducts(Resource):
 		date_created = datetime.now()
 		user_id = (user['id'])
 
-		# if verify_name_details(name):
-			# return verify_name_details(name)
-
-		# if verify_name_details(category):
-			# return verify_name_details(category)
-
 		newproduct = Product(category, name, quantity, price, date_created, user_id)
 		newproduct.save()
 
@@ -79,6 +75,7 @@ class AllProducts(Resource):
 class SingleProduct(Resource):
 	'''This class has all operations related to a single product'''
 	def get(self, id):
+		'''gets single product by id'''
 		email = get_jwt_identity()
 		user = get_user(email)
 		product = get_product(id)
@@ -88,6 +85,7 @@ class SingleProduct(Resource):
 
 	@jwt_required
 	def delete(self, id):
+		'''deletes a single product by id'''
 		email = get_jwt_identity()
 		user = get_user(email)
 
@@ -100,3 +98,45 @@ class SingleProduct(Resource):
 
 		delete_product(id)
 		return jsonify({"message": "product has been deleted"})
+
+	@jwt_required
+	def put(self, id):
+		'''
+		updates details of an existing product
+		creates a new one if not exists
+		'''
+		email = get_jwt_identity()
+		user = get_user(email)
+
+		if user['role'] != 'admin':
+			return {"message": "You are not permitted to perform this action"}
+
+		product = get_product(id)
+		args = parser.parse_args()
+		if product is None:
+
+			product = Product(
+				category = args['category'],
+				name = args['name'],
+				quantity = args['quantity'],
+				price = args['price'],
+				date_created = datetime.now(),
+				id = id,
+				user_id = (user["id"]))
+
+			product.save()
+
+			return make_response(jsonify({'Product': product.__dict__,
+	        'message': "New product created"}), 200)
+
+		else:
+			product['category'] = args['category']
+			product['name'] = args['name']
+			product['quantity'] = args['quantity'],
+			product['price'] = args['price'],
+			product['date_created'] = datetime.now()
+
+			edit_product(id, product)
+
+			return make_response(jsonify({"Product":product,
+				"message":"Updated successfully"}), 200)

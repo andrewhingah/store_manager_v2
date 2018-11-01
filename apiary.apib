@@ -168,3 +168,31 @@ A admin can delete a particular product by id
 {
     "message": "product has been deleted"
 }
+
+### Admin can modify a specific product details [PUT]
+
+A admin can update a particular product details
+
++ Parameters
+    + product_id(integer) - Id of the product.
+
++ Response 200 (application/json)
+
+{
+    "Product": {
+        "category": "snacks",
+        "date_created": "Thu, 01 Nov 2018 03:51:38 GMT",
+        "id": 2,
+        "name": [
+            "salad"
+        ],
+        "price": [
+            300
+        ],
+        "quantity": [
+            10
+        ],
+        "user_id": 1
+    },
+    "message": "Updated successfully"
+}
