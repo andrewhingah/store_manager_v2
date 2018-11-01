@@ -14,8 +14,9 @@ before_script:
 
 
 script: 
- - nosetests --exe --with-coverage --cover-package=app
+ - pytest --cov-report term-missing --cov=app
  - coveralls
 
 after_success:
  - coveralls
+ - codeclimate-test-reporter
