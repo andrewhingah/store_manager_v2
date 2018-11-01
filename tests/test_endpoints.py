@@ -208,12 +208,12 @@ class UsersTestCase(BaseTestCase):
 
     #sales
 
-    # def test_get_all_sales(self):
-    #     '''test that a user can get all sales'''
-    #     response = self.client.get('api/v2/sales', headers=self.authHeaders)
-    #     self.assertEqual(response.status_code, 200)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(result['message'], 'success')
+    def test_get_all_sales(self):
+        '''test that a user can get all sales'''
+        response = self.client.get('api/v2/sales', headers=self.authHeaders)
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result['message'], 'success')
 
     # def test_attendant_create_new_sale(self):
     #     '''test attendant can create a sale record'''
