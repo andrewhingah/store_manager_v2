@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/andrewhingah/store_manager_3.svg?branch=develop)](https://travis-ci.com/andrewhingah/store_manager_3)
-[![Coverage Status](https://coveralls.io/repos/github/andrewhingah/store_manager_3/badge.svg?branch=develop)](https://coveralls.io/github/andrewhingah/store_manager_3?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/andrewhingah/store_manager_3/badge.svg?branch=bg-fix-tear-down-in-tests-%23161656911)](https://coveralls.io/github/andrewhingah/store_manager_3?branch=bg-fix-tear-down-in-tests-%23161656911)
 [![Maintainability](https://api.codeclimate.com/v1/badges/262d9eee667b4517dcad/maintainability)](https://codeclimate.com/github/andrewhingah/store_manager_3/maintainability)
 # store_manager_3
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store
@@ -41,15 +41,16 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Install dependecies `pip install -r requirements.txt`
 
-- Run tests `pytest` or `nosetests --exe --with-coverage --cover-package=api`
+- Run tests `pytest --cov=app`
 
 - Test the endpoints on postman.
 
 	- First create a new user through url `http://127.0.0.1:5000/api/v2/auth/signup`
 
-		Header: `Content-Type: application/json`
+		Headers
+		 `Content-Type: application/json`
 
-		Sample request:
+		Body
 
 		`{
 			"name":"smith",
@@ -57,7 +58,10 @@ These instructions will get you a copy of the project up and running on your loc
 			"password":"QWdre6po_@"
 		}`
 
-	- Sign in the user: url: `http://127.0.0.1:5000/api/v2/auth/login`
+	- Sign in the user
+		url: `http://127.0.0.1:5000/api/v2/auth/login`
+
+		Body
 
 		`{
 			"email":"smith@gmail.com",
@@ -65,13 +69,15 @@ These instructions will get you a copy of the project up and running on your loc
 		}`
 
 
-		Header: `Content-Type: application/json`
+		Headers: `Content-Type: application/json`
 
 	- Copy the access token generated and post it on the bearer section part in every other endpoint you wish to test:
 
 	- A sample post product API request should look like this:
 
-		Header: `Content-Type: application/json`
+		Headers: `Content-Type: application/json`
+
+		Body
 
 		`{
 			"category": "electronics"
@@ -80,7 +86,19 @@ These instructions will get you a copy of the project up and running on your loc
 			"price": 50500
 		}`
 
-The following endpoints should work:
+
+	- A sample post sale API request should look like this:
+
+		Headers: `Content-Type: application/json`
+
+		Body
+
+		`{
+			"product_id": 1,
+			"quantity": "30"
+		}`
+		
+The following API endpoints should work:
 
 - `POST /auth/signup`
 
@@ -101,6 +119,7 @@ The following endpoints should work:
 - `POST /products`
 
 - `POST /sales`
+
 
 ## Built With
 

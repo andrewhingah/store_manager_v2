@@ -28,13 +28,12 @@ def get_user(email):
 
 def create_product(products):
     '''save new product to db'''
-    cur.execute("""INSERT INTO products(category, name, quantity, price, date_created, user_id) VALUES(
-        '%s','%s','%s','%s', now(), '%s') """%(
+    cur.execute("""INSERT INTO products(category, name, quantity, price, date_created) VALUES(
+        '%s','%s','%s','%s', now()) """%(
         products.category,
         products.name,
         products.quantity,
-        products.price,
-        products.user_id))
+        products.price))
     conn.commit()
 
 def get_products():

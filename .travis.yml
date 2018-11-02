@@ -1,22 +1,25 @@
-language: python  
-python: 
- - "3.6"  
+language: python
 
-install:  
+python:    
+ - "3.6-dev"
+ 
+services:
+  - postgres
+
+install:    
  - pip install -r requirements.txt
- - pip install coveralls
-
- services:
-  - postgresql
-
+ - pip install codeclimate-test-reporter
+ 
 before_script:
-  - psql -c 'create database test_store;' -U postgres
-
-
-script: 
- - pytest --cov-report term-missing --cov=app
+  - psql -c "create database test_store;" -U postgres
+  - psql -c "create user andrew;" -U postgres
+script:    
+ 
+ -  python -m pytest --cov=app
  - coveralls
-
+ 
 after_success:
  - coveralls
  - codeclimate-test-reporter
+
+cache: pip
