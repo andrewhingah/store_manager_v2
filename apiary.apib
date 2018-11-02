@@ -1,11 +1,11 @@
 FORMAT: 1A
 HOST: http://polls.apiblueprint.org/
 
-# storemanager
+# StoreManager
 
 Storemanager is a simple API that allows store owners manage inventory and track sales
 
-## Users [/api/v2/auth]
+## Store attendants accounts creation [/api/v2/auth/signup]
 
 ### Create a New store attendant account [POST]
 
@@ -16,9 +16,9 @@ object containing a name, email, password and a role
 
         {
             "name": "john henry",
-            "name": "john@store.com",
-            "name": "W12345@#",
-            "name": "normal"
+            "email": "john@store.com",
+            "password": "W12345@#",
+            "role": "normal"
         }
 
 + Response 201 (application/json)
@@ -39,11 +39,39 @@ object containing a name, email, password and a role
                     }
             }
             
+## Both admins and store attendants [/api/v2/auth/login]
+
+### Login a registered user [POST]
+
+Both admins and store attendants can login into their accounts. It takes a JSON
+object containing an email and password.
+
++ Request (application/json)
+
+        {
+            "email": "john henry",
+            "password": "W12345@#"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/v2/auth/login
+
+    + Body
+
+            {
+                "message": "Logged in successfully!",
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDExMjcyNjAsIm5iZiI6MTU0MTEyNzI2MCwianRpIjoiODEyMzQwZWUtMmUyNy00NDIyLWE0NDgtNzZiMDZhNTZkNDEwIiwiZXhwIjoxNTQxMTI4MTYwLCJpZGVudGl0eSI6ImFuZHJld2hpbmdhQHN0b3JlLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.i5uOF6gzH4rWKuywQ3RF5PBZd3eCo_aePyMr0WbVrtw"
+            }
+            
+            
 ## Products [/api/v2/products]
 
 ### Create a New product [POST]
 
-An admin can create a new product. It takes a JSON
+Only an admin can create a new product. It takes a JSON
 object containing a category, name, quantity and price.
 
 + Request (application/json)
@@ -74,8 +102,93 @@ object containing a category, name, quantity and price.
                 },
                 "status": "created"
             }
+            
+## Products [/api/v2/products/<int:id>]
+
+### Delete a single product by id
+
+Only an admin/store owner can delete a product.
+
+
++ Response 200
+
+    + Headers
+
+            Location: /api/v2/products/<int:id>
+
+    + Body
+
+            {
+                "message": "product has been deleted"
+            }
+
+            
+
+### Update a single product by id
+
+Only an admin can modify product details
+
+
++ Request (application/json)
+    
+        {
+            "category": "foods",
+            "name": "Chicken",
+            "quantity": 230,
+            "price": 5000
+        
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/v2/products
+
+    + Body
+
+            {
+                "Product": {
+                    "category": "foods",
+                    "date_created": "Fri, 02 Nov 2018 06:06:39 GMT",
+                    "id": 2,
+                    "name": "Chicken",
+                    "price": [
+                        "5000"
+                    ],
+                    "quantity": [
+                        "230"
+                    ]
+                },
+                "message": "Updated successfully"
+            }
+            
+### Fetch a single product by id
+
+Either an admin or a store atendant can view a single product
+
++ Response 200
+
+    + Headers
+
+            Location: /api/v2/products/<int:id>
+
+    + Body
+
+            {
+                "Product": {
+                    "category": "foods",
+                    "date_created": "Fri, 02 Nov 2018 06:06:13 GMT",
+                    "id": 2,
+                    "name": "Chicken",
+                    "price": 5000,
+                    "quantity": 230
+                },
+                "message": "success"
+            }
+
 
 ## Sales [/api/v2/sales]
+
 
 ### Create a New sale record [POST]
 
@@ -108,4 +221,69 @@ object containing a product_id and quantity.
                     "remaining_q": 28
                 },
                 "status": "created"
+            }
+            
+### Fetch all sales [GET]
+
+Only a store owner/ admin view all sales.
+        
+
++ Response 200
+
+    + Headers
+
+            Location: /api/v2/sales
+
+    + Body
+
+            {
+                "Sales": [
+                    {
+                        "date_created": "Wed, 31 Oct 2018 17:16:28 GMT",
+                        "id": 1,
+                        "name": "Coffee Mocha",
+                        "price": 5500,
+                        "product_id": 1,
+                        "quantity": 11,
+                        "remaining_q": 40
+                    },
+                    {
+                        "date_created": "Wed, 31 Oct 2018 18:20:22 GMT",
+                        "id": 2,
+                        "name": "Coffee Mocha",
+                        "price": 5500,
+                        "product_id": 1,
+                        "quantity": 11,
+                        "remaining_q": 40
+                    }
+                ],
+                "message": "success",
+                "status": "ok"
+            }
+            
+## Sales [/api/v2/sales/<int:id>]
+
+### Fetch a single sale record
+
+Only the store owner/admin and the creater of the sale can view
+
++ Response 200
+
+    + Headers
+
+            Location: /api/v2/sales/<int:id>
+
+    + Body
+
+            {
+                "Sale": {
+                    "date_created": "Fri, 02 Nov 2018 08:21:43 GMT",
+                    "id": 1,
+                    "name": "Chicken",
+                    "price": 10000,
+                    "product_id": 2,
+                    "quantity": 2,
+                    "remaining_q": 228
+                },
+                "message": "success"
             }
