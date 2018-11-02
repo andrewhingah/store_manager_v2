@@ -3,52 +3,22 @@ HOST: http://polls.apiblueprint.org/
 
 # storemanager
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Storemanager is a simple API that allows store owners manage inventory and track sales
 
-## Questions Collection [/questions]
+## Users [/api/v2/auth]
 
-### List All Questions [GET]
+### Create a New store attendant account [POST]
 
-+ Response 200 (application/json)
-
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+An admin can create a new store attendant account. It takes a JSON
+object containing a name, email, password and a role
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "name": "john henry",
+            "name": "john@store.com",
+            "name": "W12345@#",
+            "name": "normal"
         }
 
 + Response 201 (application/json)
@@ -60,21 +30,82 @@ form of choices.
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                "message": "User created!",
+                "user": {
+                    "name": "john henry",
+                    "email": "john@store.com",
+                    "password": "W12345@#",
+                    "role": "normal"
                     }
-                ]
+            }
+            
+## Products [/api/v2/products]
+
+### Create a New product [POST]
+
+An admin can create a new product. It takes a JSON
+object containing a category, name, quantity and price.
+
++ Request (application/json)
+    
+        {
+            "category": "foods",
+            "name": "Coffee Mocha",
+            "quantity": 6,
+            "price": 500
+        
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/v2/products
+
+    + Body
+
+            {
+                "message": "Product created successfully",
+                "product": {
+                    "category": "foods",
+                    "date_created": "Fri, 02 Nov 2018 05:56:56 GMT",
+                    "name": "Coffee Mocha",
+                    "price": "500",
+                    "quantity": "66"
+                },
+                "status": "created"
+            }
+
+## Sales [/api/v2/sales]
+
+### Create a New sale record [POST]
+
+A store attendant can create a new sale record. It takes a JSON
+object containing a product_id and quantity.
+
++ Request (application/json)
+    
+        {
+            "product_id": 1,
+            "quantity": 2
+        
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/v2/sales
+
+    + Body
+
+            {
+                "message": "Sale record created successfully",
+                "product": {
+                    "date_created": "Fri, 02 Nov 2018 02:33:13 GMT",
+                    "name": "MacBook",
+                    "price": 153200,
+                    "product_id": "1",
+                    "quantity": 2,
+                    "remaining_q": 28
+                },
+                "status": "created"
             }
