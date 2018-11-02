@@ -190,12 +190,13 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(result['message'], "success")
 
     def test_create_prduct_with_invalid_data(self):
+        '''test admin can not create new product with invalid data'''
         response = self.client.post(self.p_url,
             data=json.dumps(self.invalid_prod), headers=self.authHeaders)
         result = json.loads(response.data.decode())
 
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(result['message'], 'name cannot be blank')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(result['message']['name'], 'Name cannot be empty')
 
 
     def test_attendant_cannot_create_new_product(self):
@@ -275,6 +276,16 @@ class UsersTestCase(BaseTestCase):
     #     result = json.loads(res_3.data.decode())
     #     self.assertEqual(res_3.status, 200)
     #     self.assertEqual(result["message"], "success")
+
+
+    def test_delete_product(self):
+        '''test admin can delete a product'''
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        response2 = self.client.delete('api/v2/products/1', headers=self.authHeaders)
+        self.assertEqual(response2.status_code, 200)
 
 
 
