@@ -1,5 +1,4 @@
 '''Tests for users'''
-# from .base_test import BaseTestCase
 import os
 import unittest
 import json
@@ -64,6 +63,14 @@ class BaseTestCase(unittest.TestCase):
         "price": 55555
         }
 
+        self.edit_product = {
+        "category": "electronics",
+        "name": "MacBook",
+        "quantity": 77,
+        "price": 99000
+        }
+
+
         self.invalid_prod = {
         "category": "electronics",
         "quantity": 50,
@@ -117,6 +124,7 @@ class UsersTestCase(BaseTestCase):
     """This class represents Users tests."""
 
     def test_signup_user_with_existing_email(self):
+        '''test signup user with an existing email'''
         data = self.user
         response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.header)
@@ -207,18 +215,6 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(response.status, '403 FORBIDDEN')
         self.assertEqual(result["message"], "You don't have access to this page")
 
-    # def test_get_single_product_by_id(self):
-    #     """Test user sign in to their account."""
-    #     data = self.new_product
-    #     response = self.checker.post(self.p_url,
-    #         data=json.dumps(data), headers=self.authHeaders)
-    #     res_2 = self.client.get('api/v2/products/1', headers=self.authHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(result['message'], 'Product unavailable')
-    #     self.assertEqual(response.status_code, 201)
-    #     self.assertEqual(res_2.status_code, 200)
-    #     self.assertEqual(result['message'], 'success')
-
         
     #sales
 
@@ -236,46 +232,21 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(res_1.data.decode())
         self.assertEqual(res_1.status_code, 201)
 
-    #     res_3 = self.client.get(self.p_url, headers=self.authHeaders)
-    #     result2 = json.loads(res_3.data.decode())
-    #     self.assertEqual(result['products'])
-
-    #     res_2 = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(res_2.status, 201)
-    #     self.assertEqual(result["message"], "created")
-
-    # def test_attendant_create_sale_for_non_existing_product(self):
-    #     response = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(response.status, 404)
-    #     self.assertEqual(result["message"], "Product is unavailable")
-
     def test_get_unavailable_single_sale(self):
+        '''test fetch unavailable sale'''
         response = self.client.get('api/v2/sales/1',
             data=json.dumps(self.new_sale), headers=self.attHeaders)
         result = json.loads(response.data.decode())
         self.assertEqual(response.status, '404 NOT FOUND')
         self.assertEqual(result["message"], "Sale record unavailable")
 
-    # def test_get_single_sale(self):
-    #     res_1 = self.client.post(self.p_url,
-    #         data=json.dumps(self.new_product), headers=self.authHeaders)
-    #     self.assertEqual(res_1.status_code, 201)
-
-    #     res_2 = self.client.post('api/v2/sales',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_2.data.decode())
-    #     self.assertEqual(res_2.status, 201)
-    #     self.assertEqual(result["message"], "created")
-
-    #     re_3 = self.client.get('api/v2/sales/1',
-    #         data=json.dumps(self.new_sale), headers=self.attHeaders)
-    #     result = json.loads(res_3.data.decode())
-    #     self.assertEqual(res_3.status, 200)
-    #     self.assertEqual(result["message"], "success")
+    def test_admin_cannot_create_a_sale(self):
+        '''test an admin cannot make a sale'''
+        res_2 = self.client.post('api/v2/sales',
+            data=json.dumps(self.new_sale), headers=self.authHeaders)
+        result = json.loads(res_2.data.decode())
+        self.assertEqual(res_2.status, '403 FORBIDDEN')
+        self.assertEqual(result["message"], "You don't have access to this page")
 
 
     def test_delete_product(self):
@@ -287,6 +258,15 @@ class UsersTestCase(BaseTestCase):
         response2 = self.client.delete('api/v2/products/1', headers=self.authHeaders)
         self.assertEqual(response2.status_code, 200)
 
+    def test_edit_product(self):
+        '''test admin can update a product details'''
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        response2 = self.client.put('api/v2/products/1', data=json.dumps(self.edit_product),
+            headers=self.authHeaders)
+        self.assertEqual(response2.status_code, 200)
 
 
     def tearDown(self):

@@ -127,9 +127,7 @@ class SingleProduct(Resource):
 				name = args['name'],
 				quantity = args['quantity'],
 				price = args['price'],
-				date_created = datetime.now(),
-				id = id,
-				user_id = (user["id"]))
+				date_created = datetime.now())
 
 			product.save()
 
