@@ -81,6 +81,7 @@ class AllProducts(Resource):
 
 class SingleProduct(Resource):
 	'''This class has all operations related to a single product'''
+	@jwt_required
 	def get(self, id):
 		'''gets single product by id'''
 		email = get_jwt_identity()

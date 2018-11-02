@@ -12,9 +12,10 @@ from app.api.v2.utils.validate import validate_email, validate_all
 
 class UserRegistration(Resource):
 	"""Registers a new user"""
-
 	def post(self):
 		"""Register a new user"""
+		email = get_jwt_identity()
+		user = get_user(email)
 
 		data = request.get_json(force = True)
 		name = data.get('name')

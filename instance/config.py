@@ -4,15 +4,15 @@ class Config(object):
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
-    # DATABASE_NAME = 'store_manager_3'
-    DATABASE_NAME = os.getenv('DATABASE_URL')
+    DATABASE_NAME = 'store_manager_3'
+    # DATABASE_NAME = os.getenv('DATABASE_URL')
     
 
 class DevelopmentConfig(Config):
     """Configuration fro Development."""
     DEBUG = True
-    # DATABASE_NAME = "store_manager_3"
-    DATABASE_NAME = os.getenv('DATABASE_URL')
+    DATABASE_NAME = "store_manager_3"
+    # DATABASE_NAME = os.getenv('DATABASE_URL')
     JWT_SECRET_KEY = "heypeople"
 
 class TestingConfig(Config):

@@ -29,11 +29,11 @@ class AllSales(Resource):
 		product_id = args['product_id']
 		quantity = args['quantity']
 
+		if quantity < 1:
+			return {"message": "Please add a reasonable quantity"}
+
 		if validate_quantity_id(product_id):
 			return validate_quantity_id(product_id)
-
-		# if not isinstance(product_id, int):
-		# 	return {"message": "Only integers allowed"}
 
 		product = get_product(product_id)
 		if product is None:
@@ -61,6 +61,7 @@ class AllSales(Resource):
 			"product":new_sale.__dict__}
 			), 201)
 
+	@jwt_required
 	def get(self):
 		"""gets all products"""
 		sales = get_sales()
@@ -77,11 +78,9 @@ class AllSales(Resource):
 
 class SingleSale(Resource):
 	'''class represents operations for one sale record'''
+	@jwt_required
 	def get(self, id):
 		'''gets single sale by id'''
-
-		# email = get_jwt_identity()
-		# user = get_user(email)
 		sale_record = get_sale(id)
 		if sale_record is None:
 			return make_response(jsonify({"message": "Sale record unavailable"}), 404)
