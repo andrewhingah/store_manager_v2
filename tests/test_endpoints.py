@@ -64,6 +64,12 @@ class BaseTestCase(unittest.TestCase):
         "price": 55555
         }
 
+        self.invalid_prod = {
+        "category": "electronics",
+        "quantity": 50,
+        "price": 50900
+        }
+
         self.new_sale = {
 
         "product_id": 1,
@@ -182,6 +188,15 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], "success")
+
+    def test_create_prduct_with_invalid_data(self):
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.invalid_prod), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result['message'], 'name cannot be blank')
+
 
     def test_attendant_cannot_create_new_product(self):
         '''test a normal attendant cannot create a new product'''

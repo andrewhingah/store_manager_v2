@@ -36,8 +36,6 @@ def migrate():
         quantity INT NOT NULL,
         price INT NOT NULL,
         date_created TIMESTAMP
-        -- user_id INT NOT NULL,
-        -- FOREIGN KEY (user_id) REFERENCES users(id)
         );""")
 
     cur.execute("""CREATE TABLE IF NOT EXISTS sales(
@@ -48,8 +46,6 @@ def migrate():
         price INT NOT NULL,
         name varchar,
         date_created TIMESTAMP
-        -- product_id INT NOT NULL 
-        -- FOREIGN KEY (product_id) REFERENCES products(id)
         );""")
     
     print("Database connected")
