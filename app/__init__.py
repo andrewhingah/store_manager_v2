@@ -1,6 +1,7 @@
 """Module has the create app function"""
 from flask import Flask, Blueprint
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 
 from app.db_con import Database
@@ -12,6 +13,7 @@ from instance.config import app_config
 def create_app(config_name):
 	"""define app and register blueprint"""
 	app = Flask(__name__, instance_relative_config=True)
+	CORS(app)
 
 	jwt = JWTManager(app)
 
