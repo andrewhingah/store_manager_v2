@@ -12,10 +12,14 @@ from app.api.v2.utils.validate import validate_email, validate_all
 
 class UserRegistration(Resource):
 	"""Registers a new user"""
+	@jwt_required
 	def post(self):
 		"""Register a new user"""
 		email = get_jwt_identity()
 		user = get_user(email)
+
+		if user['role'] != 'admin':
+			return {"message": "You don't have access to this page"}, 403
 
 		data = request.get_json(force = True)
 		name = data.get('name')
