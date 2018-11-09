@@ -98,7 +98,7 @@ class SingleProduct(Resource):
 		user = get_user(email)
 
 		if user['role'] != "admin":
-			return {"message": "You are not permitted to perform this action"}
+			return {"message": "You are not permitted to perform this action"}, 403
 
 		product = get_product(id)
 		if product is None:
@@ -117,7 +117,7 @@ class SingleProduct(Resource):
 		user = get_user(email)
 
 		if user['role'] != 'admin':
-			return {"message": "You are not permitted to perform this action"}
+			return {"message": "You are not permitted to perform this action"}, 403
 
 		product = get_product(id)
 		args = parser.parse_args()
@@ -133,7 +133,7 @@ class SingleProduct(Resource):
 			product.save()
 
 			return make_response(jsonify({'Product': product.__dict__,
-	        'message': "New product created"}), 200)
+	        'message': "New product created"}), 201)
 
 		else:
 			product['category'] = args['category']

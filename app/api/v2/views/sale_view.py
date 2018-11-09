@@ -29,8 +29,8 @@ class AllSales(Resource):
 		product_id = args['product_id']
 		quantity = args['quantity']
 
-		if quantity < 1:
-			return {"message": "Please add a reasonable quantity"}
+		if quantity <= 0:
+			return {"message": "Please provide quantity above zero"}
 
 		if validate_quantity_id(product_id):
 			return validate_quantity_id(product_id)
@@ -64,6 +64,10 @@ class AllSales(Resource):
 	@jwt_required
 	def get(self):
 		"""gets all products"""
+		email = get_jwt_identity()
+		user = get_user(email)
+		if user['role'] != 'admin':
+			return {"message": "You don't have access to this page"}, 403
 		sales = get_sales()
 		if sales is None:
 			return make_response(jsonify(
