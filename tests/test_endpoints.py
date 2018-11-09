@@ -20,21 +20,9 @@ class BaseTestCase(unittest.TestCase):
         self.checker = self.app.test_client()
         self.attendant = self.app.test_client()
 
-        self.admin = {
-        'name':'andrew hinga',
-        'email': 'andrewhinga5@gmail.com',
-        'password': '1234@Weee',
-        'role': 'admin'
-        }
-
     
-        # self.admin_login = {
-        # 'email': 'andrewhinga5@gmail.com',
-        # 'password': '1234@Weee'
-        # }
-
         self.admin_login = {
-        'email': 'andrewhinga@store.com',
+        'email': 'super@admin.com',
         'password': 'A123@admin'
         }
 
@@ -44,8 +32,6 @@ class BaseTestCase(unittest.TestCase):
         'password': '1881@#&TQ',
         'role': 'normal'
         }
-
-       
 
         self.new_user = {
         "name": "John Kamau",
@@ -80,7 +66,6 @@ class BaseTestCase(unittest.TestCase):
         }
 
         self.new_sale = {
-
         "product_id": 1,
         "quantity": 3
         }
@@ -91,9 +76,6 @@ class BaseTestCase(unittest.TestCase):
 
         self.header = {"content-type": "application/json"}
 
-
-        # # create an admin
-        # self.client.post('/api/v2/auth/signup', data=json.dumps(self.admin), headers=self.header)
 
         # login the admin
         response = self.client.post("/api/v2/auth/login", data=json.dumps(self.admin_login), headers=self.header)
@@ -127,7 +109,6 @@ class UsersTestCase(BaseTestCase):
 
     def test_signup_user_with_existing_email(self):
         '''test signup user with an existing email'''
-        # data = self.admin
         data = self.att_user
         response = self.checker.post(self.s_url,
             data=json.dumps(data), headers=self.authHeaders)

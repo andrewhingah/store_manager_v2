@@ -30,8 +30,13 @@ def migrate():
     	);""")
 
     #create default admin
-    cur.execute("""INSERT INTO users(name, email, password, role) VALUES(
-        'Andrew Hinga', 'andrewhinga@store.com','A123@admin','admin') ON CONFLICT DO NOTHING;""")
+    # cur.execute("""INSERT INTO users(name, email, password, role) VALUES(
+    #     'Andrew Hinga', 'andrewhinga@store.com','A123@admin','admin') ON CONFLICT DO NOTHING;""")
+    # conn.commit()
+    cur.execute("""INSERT INTO users (name, email, password,role) SELECT 'superadmin','super@admin.com','A123@admin','admin' WHERE 'super@admin.com' NOT IN
+        (
+        SELECT email FROM users
+        );""")
     conn.commit()
 
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
