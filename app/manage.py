@@ -29,6 +29,11 @@ def migrate():
         role varchar
     	);""")
 
+    #create default admin
+    cur.execute("""INSERT INTO users(name, email, password, role) VALUES(
+        'Andrew Hinga', 'andrewhinga@store.com','A123@admin','admin') ON CONFLICT DO NOTHING;""")
+    conn.commit()
+
     cur.execute("""CREATE TABLE IF NOT EXISTS products(
         id serial PRIMARY KEY,
         name varchar,
