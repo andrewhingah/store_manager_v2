@@ -20,15 +20,22 @@ class BaseTestCase(unittest.TestCase):
         self.checker = self.app.test_client()
         self.attendant = self.app.test_client()
 
-        self.users = {
+        self.admin = {
         'name':'andrew hinga',
         'email': 'andrewhinga5@gmail.com',
         'password': '1234@Weee',
-        'role': 'normal'
+        'role': 'admin'
         }
-        self.user_login = {
-        'email': 'andrewhinga5@gmail.com',
-        'password': '1234@Weee'
+
+    
+        # self.admin_login = {
+        # 'email': 'andrewhinga5@gmail.com',
+        # 'password': '1234@Weee'
+        # }
+
+        self.admin_login = {
+        'email': 'andrewhinga@store.com',
+        'password': 'A123@admin'
         }
 
         self.att_user = {
@@ -38,12 +45,7 @@ class BaseTestCase(unittest.TestCase):
         'role': 'normal'
         }
 
-        self.user = {
-        'name':'andrew hinga',
-        'email': 'andrewhinga5@gmail.com',
-        'password': '1234@Weee',
-        'role': 'admin'
-        }
+       
 
         self.new_user = {
         "name": "John Kamau",
@@ -90,11 +92,11 @@ class BaseTestCase(unittest.TestCase):
         self.header = {"content-type": "application/json"}
 
 
-        # create an admin
-        self.client.post('/api/v2/auth/signup', data=json.dumps(self.user), headers=self.header)
+        # # create an admin
+        # self.client.post('/api/v2/auth/signup', data=json.dumps(self.admin), headers=self.header)
 
         # login the admin
-        response = self.client.post("/api/v2/auth/login", data=json.dumps(self.user_login), headers=self.header)
+        response = self.client.post("/api/v2/auth/login", data=json.dumps(self.admin_login), headers=self.header)
         # create the authentication headers
         self.authHeaders = {"content-type":"application/json"}
 
@@ -104,7 +106,7 @@ class BaseTestCase(unittest.TestCase):
         self.authHeaders['Authorization'] = 'Bearer '+result['token']
 
         # create an normal attendant account
-        self.attendant.post('/api/v2/auth/signup', data=json.dumps(self.att_user), headers=self.header)
+        self.attendant.post('/api/v2/auth/signup', data=json.dumps(self.att_user), headers=self.authHeaders)
 
 
         # login the store attendant
@@ -125,9 +127,10 @@ class UsersTestCase(BaseTestCase):
 
     def test_signup_user_with_existing_email(self):
         '''test signup user with an existing email'''
-        data = self.user
+        # data = self.admin
+        data = self.att_user
         response = self.checker.post(self.s_url,
-            data=json.dumps(data), headers=self.header)
+            data=json.dumps(data), headers=self.authHeaders)
 
         result = json.loads(response.data.decode())
 
@@ -138,7 +141,7 @@ class UsersTestCase(BaseTestCase):
         """Test to register new user."""
         data = self.new_user
         response = self.checker.post(self.s_url,
-            data=json.dumps(data), headers=self.header)
+            data=json.dumps(data), headers=self.authHeaders)
 
         result = json.loads(response.data.decode())
 
@@ -150,7 +153,7 @@ class UsersTestCase(BaseTestCase):
         """Test user sign in to their account."""
         data = self.new_user
         response = self.checker.post(self.s_url,
-            data=json.dumps(data), headers=self.header)
+            data=json.dumps(data), headers=self.authHeaders)
 
 
         self.assertEqual(response.status_code, 201)
@@ -190,9 +193,16 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(result['message'], 'Product created successfully')
 
 
-    def test_get_all_products(self):
+    def test_admin_get_all_products(self):
         '''test admin can get all available products'''
         response = self.client.get(self.p_url, headers=self.authHeaders)
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result['message'], "success")
+
+    def test_attendant_get_all_products(self):
+        '''test a store attendant can get all available products'''
+        response = self.client.get(self.p_url, headers=self.attHeaders)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], "success")
@@ -216,26 +226,27 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(result["message"], "You don't have access to this page")
 
         
-    #sales
+    # #sales
 
-    def test_get_all_sales(self):
-        '''test that a user can get all sales'''
+    def test_admin_get_all_sales(self):
+        '''test that an admin can get all sales'''
         response = self.client.get('api/v2/sales', headers=self.authHeaders)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], 'success')
 
-    def test_attendant_create_new_sale(self):
-        '''test attendant can create a sale record'''
-        res_1 = self.client.post(self.p_url,
-            data=json.dumps(self.new_product), headers=self.authHeaders)
-        result = json.loads(res_1.data.decode())
-        self.assertEqual(res_1.status_code, 201)
+    def test_attendant_cannot_view_sales(self):
+        '''test that a store attendant cannot view sales'''
+        response = self.client.get('api/v2/sales', headers=self.attHeaders)
+        self.assertEqual(response.status_code, 403)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result['message'], "You don't have access to this page")
+
 
     def test_get_unavailable_single_sale(self):
         '''test fetch unavailable sale'''
         response = self.client.get('api/v2/sales/1',
-            data=json.dumps(self.new_sale), headers=self.attHeaders)
+            data=json.dumps(self.new_sale), headers=self.authHeaders)
         result = json.loads(response.data.decode())
         self.assertEqual(response.status, '404 NOT FOUND')
         self.assertEqual(result["message"], "Sale record unavailable")
@@ -249,7 +260,7 @@ class UsersTestCase(BaseTestCase):
         self.assertEqual(result["message"], "You don't have access to this page")
 
 
-    def test_delete_product(self):
+    def test_admin_delete_product(self):
         '''test admin can delete a product'''
         response = self.client.post(self.p_url,
             data=json.dumps(self.new_product), headers=self.authHeaders)
@@ -258,7 +269,16 @@ class UsersTestCase(BaseTestCase):
         response2 = self.client.delete('api/v2/products/1', headers=self.authHeaders)
         self.assertEqual(response2.status_code, 200)
 
-    def test_edit_product(self):
+    def test_attendant_cannot_delete_product(self):
+        '''test a store attendant cannot delete a product'''
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        response2 = self.client.delete('api/v2/products/1', headers=self.attHeaders)
+        self.assertEqual(response2.status_code, 403)
+
+    def test_admin_edit_product(self):
         '''test admin can update a product details'''
         response = self.client.post(self.p_url,
             data=json.dumps(self.new_product), headers=self.authHeaders)
@@ -266,7 +286,17 @@ class UsersTestCase(BaseTestCase):
 
         response2 = self.client.put('api/v2/products/1', data=json.dumps(self.edit_product),
             headers=self.authHeaders)
-        self.assertEqual(response2.status_code, 200)
+        self.assertEqual(response2.status_code, 201)
+
+    def test_attendant_cannot_edit_product(self):
+        '''test attendant cannot update a product details'''
+        response = self.client.post(self.p_url,
+            data=json.dumps(self.new_product), headers=self.authHeaders)
+        result = json.loads(response.data.decode())
+
+        response2 = self.client.put('api/v2/products/1', data=json.dumps(self.edit_product),
+            headers=self.attHeaders)
+        self.assertEqual(response2.status_code, 403)
 
 
     def tearDown(self):
