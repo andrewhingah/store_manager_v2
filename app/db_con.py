@@ -13,7 +13,7 @@ class Database:
 
     def init_app(self, app):
         '''create the database connection'''
-        self.app = app
+        # self.app = app
         self.conn = psycopg2.connect(
             dbname="db5h1pj6grd382",
             user="ccsndmujpnfgbg",
