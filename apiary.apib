@@ -116,9 +116,34 @@ object containing a category, name, quantity and price.
                 "status": "created"
             }
             
+### Fetch all Products [GET]
+
+Both admin and store attendant can view all products
+
++ Response 200
+
+    + Headers
+
+            Location: /api/v2/products
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
+
+    + Body
+
+            {
+                "message": "Product created successfully",
+                "product": {
+                    "category": "foods",
+                    "date_created": "Fri, 02 Nov 2018 05:56:56 GMT",
+                    "name": "Coffee Mocha",
+                    "price": "500",
+                    "quantity": "66"
+                },
+                "status": "created"
+            }
+            
 ## Single Product [/api/v2/products/<int:id>]
 
-### Delete a single product by id
+### Delete a single product by id [DELETE]
 
 Only an admin/store owner can delete a product.
 
@@ -138,7 +163,7 @@ Only an admin/store owner can delete a product.
 
             
 
-### Update a single product by id
+### Update a single product by id [PUT]
 
 Only an admin can modify product details
 
@@ -148,12 +173,14 @@ Only an admin can modify product details
     + Headers
     
             Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
+    + Body
     
-        {
-            "category": "foods",
-            "name": "Chicken",
-            "quantity": 230,
-            "price": 5000
+            {
+                "category": "foods",
+                "name": "Chicken",
+                "quantity": 230,
+                "price": 5000
+            }
         
 
 + Response 201 (application/json)
@@ -180,7 +207,7 @@ Only an admin can modify product details
                 "message": "Updated successfully"
             }
             
-### Fetch a single product by id
+### Fetch a single product by id [GET]
 
 Either an admin or a store atendant can view a single product
 
@@ -259,6 +286,7 @@ Only a store owner/ admin can view all sales.
     + Headers
 
             Location: /api/v2/sales
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
 
     + Body
 
