@@ -26,9 +26,12 @@ class UserRegistration(Resource):
 		email = data.get('email')
 		password= data.get('password')
 		role= data.get('role')
+		print (role)
 
 		if validate_all(name, email, password):
 			return validate_all(name, email, password)
+		if str(role) != 'admin' and str(role) != 'normal':
+			return {"message": "Role should either be admin or normal"}
 
 		user = get_user(email)
 
