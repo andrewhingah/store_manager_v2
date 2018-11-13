@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: https://hingastores.herokuapp.com/
 
 # StoreManager
 
@@ -49,8 +49,8 @@ object containing an email and password.
 + Request (application/json)
 
         {
-            "email": "john henry",
-            "password": "W12345@#"
+            "email": "super@admin.com",
+            "password": "A123@admin"
         }
 
 + Response 201 (application/json)
@@ -75,12 +75,18 @@ Only an admin can create a new product. It takes a JSON
 object containing a category, name, quantity and price.
 
 + Request (application/json)
+    + Body
     
-        {
-            "category": "foods",
-            "name": "Coffee Mocha",
-            "quantity": 6,
-            "price": 500
+            {
+                "category": "foods",
+                "name": "Coffee Mocha",
+                "quantity": 6,
+                "price": 500
+            }
+        
+    + Headers
+    
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
         
 
 + Response 201 (application/json)
@@ -115,6 +121,7 @@ Only an admin/store owner can delete a product.
     + Headers
 
             Location: /api/v2/products/<int:id>
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84"
 
     + Body
 
