@@ -5,41 +5,7 @@ HOST: https://hingastores.herokuapp.com/
 
 Storemanager is a simple API that allows store owners manage inventory and track sales
 
-## Store attendants accounts creation [/api/v2/auth/signup]
-
-### Create a New store attendant account [POST]
-
-An admin can create a new store attendant account. It takes a JSON
-object containing a name, email, password and a role
-
-+ Request (application/json)
-
-        {
-            "name": "john henry",
-            "email": "john@store.com",
-            "password": "W12345@#",
-            "role": "normal"
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /questions/2
-
-    + Body
-
-            {
-                "message": "User created!",
-                "user": {
-                    "name": "john henry",
-                    "email": "john@store.com",
-                    "password": "W12345@#",
-                    "role": "normal"
-                    }
-            }
-            
-## Both admins and store attendants [/api/v2/auth/login]
+## Admin/Store Attendant Log In [/api/v2/auth/login]
 
 ### Login a registered user [POST]
 
@@ -64,6 +30,47 @@ object containing an email and password.
             {
                 "message": "Logged in successfully!",
                 "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDExMjcyNjAsIm5iZiI6MTU0MTEyNzI2MCwianRpIjoiODEyMzQwZWUtMmUyNy00NDIyLWE0NDgtNzZiMDZhNTZkNDEwIiwiZXhwIjoxNTQxMTI4MTYwLCJpZGVudGl0eSI6ImFuZHJld2hpbmdhQHN0b3JlLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.i5uOF6gzH4rWKuywQ3RF5PBZd3eCo_aePyMr0WbVrtw"
+            }
+            
+
+## Store attendants accounts creation [/api/v2/auth/signup]
+
+### Create a New store attendant account [POST]
+
+Only an admin can create a new store attendant account. It takes a JSON
+object containing a name, email, password and a role
+
++ Request (application/json)
+
+    + Headers
+            
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
+    
+    + Body
+    
+            {
+                "name": "john henry",
+                "email": "john@store.com",
+                "password": "W12345@#",
+                "role": "normal"
+            }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
+
+            {
+                "message": "User created!",
+                "user": {
+                    "name": "john henry",
+                    "email": "john@store.com",
+                    "password": "W12345@#",
+                    "role": "normal"
+                    }
             }
             
             
@@ -109,7 +116,7 @@ object containing a category, name, quantity and price.
                 "status": "created"
             }
             
-## Products [/api/v2/products/<int:id>]
+## Single Product [/api/v2/products/<int:id>]
 
 ### Delete a single product by id
 
@@ -137,6 +144,10 @@ Only an admin can modify product details
 
 
 + Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
     
         {
             "category": "foods",
@@ -178,6 +189,7 @@ Either an admin or a store atendant can view a single product
     + Headers
 
             Location: /api/v2/products/<int:id>
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
 
     + Body
 
@@ -199,14 +211,21 @@ Either an admin or a store atendant can view a single product
 
 ### Create a New sale record [POST]
 
-A store attendant can create a new sale record. It takes a JSON
+Only a store attendant can create a new sale record. It takes a JSON
 object containing a product_id and quantity.
 
 + Request (application/json)
+
+    + Headers
     
-        {
-            "product_id": 1,
-            "quantity": 2
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
+        
+    + Body
+    
+            {
+                "product_id": 1,
+                "quantity": 2
+            }
         
 
 + Response 201 (application/json)
@@ -232,7 +251,7 @@ object containing a product_id and quantity.
             
 ### Fetch all sales [GET]
 
-Only a store owner/ admin view all sales.
+Only a store owner/ admin can view all sales.
         
 
 + Response 200
@@ -268,17 +287,18 @@ Only a store owner/ admin view all sales.
                 "status": "ok"
             }
             
-## Sales [/api/v2/sales/<int:id>]
+## Single Sale [/api/v2/sales/<int:id>]
 
 ### Fetch a single sale record
 
-Only the store owner/admin and the creater of the sale can view
+Only the store owner/admin and the creater of the sale can view the single sale.
 
 + Response 200
 
     + Headers
 
             Location: /api/v2/sales/<int:id>
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
 
     + Body
 
