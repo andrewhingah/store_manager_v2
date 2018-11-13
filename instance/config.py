@@ -18,7 +18,7 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     DATABASE_NAME="test_store"
-    JWT_SECRET_KEY=os.getenv("SECRET")
+    JWT_SECRET_KEY="secretsecret"
 
 class StagingConfig(Config):
     """Configuration for Staging."""
