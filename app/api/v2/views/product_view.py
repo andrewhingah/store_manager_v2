@@ -51,7 +51,6 @@ class AllProducts(Resource):
 		quantity = args['quantity']
 		price = args['price']
 		date_created = datetime.now()
-		# user_id = (user['id'])
 
 		if verify_name_details(category):
 			return verify_name_details(category)
