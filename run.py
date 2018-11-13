@@ -2,7 +2,7 @@ import os
 
 from app import create_app
 
-app = create_app(os.getenv('APP_SETTINGS'))
+app = create_app(os.getenv('APP_SETTINGS',default='development'))
 
 
 from app.manage import migrate

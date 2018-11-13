@@ -18,7 +18,6 @@ def create_app(config_name):
 	jwt = JWTManager(app)
 
 	app.config.from_object(app_config[config_name])
-	app.config.from_pyfile('config.py')
 	db.init_app(app)
 
 	from .api.v2 import version2 as v2
