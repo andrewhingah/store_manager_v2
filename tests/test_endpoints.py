@@ -12,7 +12,7 @@ class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
         """Define test variables and initialize app."""
-        self.app = create_app(config_name="testing")
+        self.app = create_app("testing")
         with self.app.app_context():
             migrate()
     

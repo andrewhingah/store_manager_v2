@@ -4,22 +4,21 @@ class Config(object):
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
-    DATABASE_NAME = 'store_manager_3'
-    # DATABASE_NAME = os.getenv('DATABASE_URL')
+    DATABASE_NAME=os.getenv("DB_NAME")
+    JWT_SECRET_KEY=os.getenv("SECRET")
     
 
 class DevelopmentConfig(Config):
     """Configuration fro Development."""
     DEBUG = True
-    DATABASE_NAME = os.getenv('dbname')
-    JWT_SECRET_KEY = os.getenv('SECRET')
+    JWT_SECRET_KEY=os.getenv("SECRET")
 
 class TestingConfig(Config):
     """Configuration for Testing."""
     TESTING = True
     DEBUG = True
-    DATABASE_NAME = "test_store"
-    JWT_SECRET_KEY = "heypeople"
+    DATABASE_NAME="test_store"
+    JWT_SECRET_KEY=os.getenv("SECRET")
 
 class StagingConfig(Config):
     """Configuration for Staging."""
@@ -30,7 +29,8 @@ class ProductionConfig(Config):
     """Configration for Production"""
     DEBUG = False
     TESTING = False
-    JWT_SECRET_KEY = "heypeople"
+    JWT_SECRET_KEY=os.getenv("SECRET")
+
 
 app_config = {
     'development' : DevelopmentConfig,
