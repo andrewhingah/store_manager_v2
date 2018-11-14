@@ -8,12 +8,11 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 from app.api.v2.models.product_model import Sale
 from app.api.v2.models.helpers import get_product, get_sales, get_sale, get_user, decrease_quantity
-from app.api.v2.utils.validate import validate_quantity_id
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('product_id', required=True, help="Id cannot be blank")
-parser.add_argument('quantity', type=int, required=True, help="Quantity can only be an integer")
+parser.add_argument('product_id', type=int, help="Id can only be an integer")
+parser.add_argument('quantity', type=int, help="Quantity can only be an integer")
 
 class AllSales(Resource):
 	"""All products class"""
@@ -29,11 +28,13 @@ class AllSales(Resource):
 		product_id = args['product_id']
 		quantity = args['quantity']
 
+		if not product_id:
+			return {"message": "Product ID must be provided"}, 400
+		if not quantity:
+			return {"message": "Quantity must be provided"}, 400
+
 		if quantity <= 0:
 			return {"message": "Please provide quantity above zero"}
-
-		if validate_quantity_id(product_id):
-			return validate_quantity_id(product_id)
 
 		product = get_product(product_id)
 		if product is None:

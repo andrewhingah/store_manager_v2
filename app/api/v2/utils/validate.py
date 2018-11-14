@@ -50,7 +50,3 @@ def validate_all(username, email, password):
         return validate_email(email)
     if validate_password(password):
         return validate_password(password)
-
-def validate_quantity_id(num):
-    if not num.isdigit():
-        return {"message": "Only integers are allowed for the field"}
