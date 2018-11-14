@@ -51,6 +51,11 @@ class UserLogin(Resource):
 		email = data.get('email')
 		password = data.get('password')
 
+		if not email:
+			return {"message": "Email must be provided"}, 400
+		if not password:
+			return {"message": "Password must be provided"}, 400
+
 		if validate_email(email):
 			return validate_email(email)
 

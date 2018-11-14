@@ -3,13 +3,13 @@ import re
 def verify_name_details(name):
     """check that user details are valid"""
     if len(name.strip()) == 0:
-        return {"message":"This cannot be empty"}, 400
+        return {"message":"Name/category cannot be empty"}, 400
     if len(name) < 3:
         return {"message":"Too short, please add more characters"}, 400
     if len(name) > 15:
         return 'Too long, please remove some characters', 400
     if name.isdigit():
-        return {"message":"This cannot be digits only"}, 400
+        return {"message":"Name cannot be digits only"}, 400
     if re.search('[a-z]',name) is None:
         return {"message": "please include a letter"}, 400
 
