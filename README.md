@@ -74,7 +74,7 @@ These instructions will get you a copy of the project up and running on your loc
 	- Sign in as the default admin
 	
 		url:
-			`http://127.0.0.1:5000/api/v2/auth/signup`
+			`http://127.0.0.1:5000/api/v2/auth/login`
 
 		Headers
 			`Content-Type: application/json`
@@ -87,31 +87,32 @@ These instructions will get you a copy of the project up and running on your loc
 			}`
 
 
-	- Copy the access token generated and add it as a headers in the other requests
+	- Copy the access token generated and add it as an `Authorization` header in the other requests
 
 	- Post product
-	A sample post product API request should look like this:
+
+		A sample post product API request should look like this:
 
 		Headers:
-		`Content-Type: application/json`
-		`Authorization: Bearer +access_token`
+			`Content-Type: application/json`
+			`Authorization: Bearer +access_token`
 
 
 		Body
 
-		`{
-			"category": "electronics"
-			"name": "Iphone 6",
-			"quantity": "30",
-			"price": 50500
-		}`
+			`{
+				"category": "electronics"
+				"name": "Iphone 6",
+				"quantity": "30",
+				"price": 50500
+			}`
 
 	- To sign up a new store attendant
 
 		url:
 			`http://127.0.0.1:5000/api/v2/auth/signup`
 
-		Headers
+		Headers:
 			`Content-Type: application/json`
 			`Authorization: Bearer +access_token`
 
@@ -120,7 +121,8 @@ These instructions will get you a copy of the project up and running on your loc
 			`{
 				"name": "Henry John"
 				"email":"henry@store.com",
-				"password":"A123#tdg3"
+				"password":"A123#tdg3",
+				"role": "normal"
 			}
 
 	- Create a sale order
@@ -133,10 +135,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 		Body
 
-		`{
-			"product_id": 1,
-			"quantity": "30"
-		}`
+			`{
+				"product_id": 1,
+				"quantity": "30"
+			}`
 
 
 ## Built With
