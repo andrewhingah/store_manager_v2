@@ -115,7 +115,7 @@ class UsersTestCase(BaseTestCase):
 
         result = json.loads(response.data.decode())
 
-        self.assertEqual(result['message'], 'Email already exists.')
+        self.assertEqual(result['message'], 'User with that email already exists.')
         self.assertEqual(response.status_code, 202)
 
     def test_signup_new_user(self):
@@ -195,7 +195,7 @@ class UsersTestCase(BaseTestCase):
         result = json.loads(response.data.decode())
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(result['message']['name'], 'Name cannot be empty')
+        self.assertEqual(result['message']['name'], 'Name must be provided')
 
 
     def test_attendant_cannot_create_new_product(self):
