@@ -2,7 +2,23 @@
 [![Coverage Status](https://coveralls.io/repos/github/andrewhingah/store_manager_3/badge.svg?branch=bg-fix-tear-down-in-tests-%23161656911)](https://coveralls.io/github/andrewhingah/store_manager_3?branch=bg-fix-tear-down-in-tests-%23161656911)
 [![Maintainability](https://api.codeclimate.com/v1/badges/262d9eee667b4517dcad/maintainability)](https://codeclimate.com/github/andrewhingah/store_manager_3/maintainability)
 # store_manager_3
-Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store
+Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
+This is an implementation of a restful api to power the frontend pages.
+
+## Endpoints
+
+| Endpoints                    | Functionality              | Authorization              |
+| -----------------------------|:--------------------------:| --------------------------:|
+| POST /auth/signup            | Register a user            | Admin only                 |
+| POST /auth/login             | Login a user               | Admin and store attendant  |
+| GET /products                | Fetch all products         | Admin and store attendant  |
+| GET /products/<productId>    | Fetch single product       | Admin and store attendant  |
+| GET /sales                   | Fetch all sales            | Admin only                 |
+| GET /sales/<saleId>          | Fetch a single sale        | Admin and the sale creater |
+| POST /products               | Create a product           | Admin only                 |
+| POST /sales                  | Create a sale order        | Store attendant only       |
+| PUT /products/<productId>    | Modify a product           | Admin only                 |
+| DELETE /products/<productId> | Delete an existing product | Admin only                 |
 
 ## Getting Started
 
@@ -41,41 +57,45 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Install dependecies `pip install -r requirements.txt`
 
+- Set up database
+
+	Development database
+
+	`$ psql -c 'create database <development_database>;' -U <postgres_username>`
+
+	Testing database
+
+	`$ psql -c 'create database <testing_database>;' -U <postgres_username>`
+
 - Run tests `pytest --cov=app`
 
 - Test the endpoints on postman.
 
-	- First create a new user through url `http://127.0.0.1:5000/api/v2/auth/signup`
+	- Sign in as the default admin
+	
+		url:
+			`http://127.0.0.1:5000/api/v2/auth/signup`
 
 		Headers
-		 `Content-Type: application/json`
+			`Content-Type: application/json`
 
 		Body
 
-		`{
-			"name":"smith",
-			"email":"smith@gmail.com",
-			"password":"QWdre6po_@"
-		}`
-
-	- Sign in the user
-		url: `http://127.0.0.1:5000/api/v2/auth/login`
-
-		Body
-
-		`{
-			"email":"smith@gmail.com",
-			"password":"7QWdre6po_@"
-		}`
+			`{
+				"email":"super@admin.com",
+				"password":"A123@admin"
+			}`
 
 
-		Headers: `Content-Type: application/json`
+	- Copy the access token generated and add it as a headers in the other requests
 
-	- Copy the access token generated and post it on the bearer section part in every other endpoint you wish to test:
+	- Post product
+	A sample post product API request should look like this:
 
-	- A sample post product API request should look like this:
+		Headers:
+		`Content-Type: application/json`
+		`Authorization: Bearer +access_token`
 
-		Headers: `Content-Type: application/json`
 
 		Body
 
@@ -86,10 +106,30 @@ These instructions will get you a copy of the project up and running on your loc
 			"price": 50500
 		}`
 
+	- To sign up a new store attendant
 
-	- A sample post sale API request should look like this:
+		url:
+			`http://127.0.0.1:5000/api/v2/auth/signup`
 
-		Headers: `Content-Type: application/json`
+		Headers
+			`Content-Type: application/json`
+			`Authorization: Bearer +access_token`
+
+		Body
+
+			`{
+				"name": "Henry John"
+				"email":"henry@store.com",
+				"password":"A123#tdg3"
+			}
+
+	- Create a sale order
+
+	A sample post sale API request should look like this:
+
+		Headers:
+			`Content-Type: application/json`
+			`Authorization: Bearer +access_token`
 
 		Body
 
@@ -97,28 +137,6 @@ These instructions will get you a copy of the project up and running on your loc
 			"product_id": 1,
 			"quantity": "30"
 		}`
-		
-The following API endpoints should work:
-
-- `POST /auth/signup`
-
-- `POST /auth/login`
-
-- `GET /products`
-
-- `GET /products/<productId>`
-
-- `PUT /products/<productId>`
-
-- `DELETE /products/<productId>`
-
-- `GET /sales`
-
-- `GET /sales/<saleId>`
-
-- `POST /products`
-
-- `POST /sales`
 
 
 ## Built With
@@ -131,7 +149,7 @@ The following API endpoints should work:
 
 ## Contributing
 
-- Fork it from https://github.com/andrewhingah/storemanager/fork
+- Fork it from https://github.com/andrewhingah/store_manager_3/fork
 
 - Create your feature branch `git branch somefeature` then `git checkout somefeature`
 
