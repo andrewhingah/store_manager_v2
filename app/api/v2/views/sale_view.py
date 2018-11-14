@@ -13,7 +13,7 @@ from app.api.v2.utils.validate import validate_quantity_id
 
 parser = reqparse.RequestParser()
 parser.add_argument('product_id', required=True, help="Id cannot be blank")
-parser.add_argument('quantity', type=int, required=True, help="Only integers allowed")
+parser.add_argument('quantity', type=int, required=True, help="Quantity can only be an integer")
 
 class AllSales(Resource):
 	"""All products class"""

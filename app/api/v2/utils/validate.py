@@ -2,20 +2,25 @@ import re
 
 def verify_name_details(name):
     """check that user details are valid"""
+    if not name:
+        return {"message": "Name must be provided"}, 400
     if len(name.strip()) == 0:
-        return {"message":"This cannot be empty"}, 400
+        return {"message":"Name cannot be empty"}, 400
     if len(name) < 3:
         return {"message":"Too short, please add more characters"}, 400
     if len(name) > 15:
         return 'Too long, please remove some characters', 400
     if name.isdigit():
-        return {"message":"This cannot be digits only"}, 400
+        return {"message":"Name cannot be digits only"}, 400
     if re.search('[a-z]',name) is None:
         return {"message": "please include a letter"}, 400
 
 def validate_email(email):
     
     email_regex = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+
+    if not email:
+        return {'Status': 'Error', 'message': 'Email must be provided'}, 400
 
     if not re.match(email_regex, email):
         return {
@@ -28,6 +33,8 @@ def validate_password(password):
     password should contain a digit
     password should contain a capital letter
     '''
+    if not password:
+        return {"message":"Password must be provided"}, 400
     if len(password) < 8:
         return {"message":"Make sure your password is at lest 8 characters"}, 400
     elif re.search('[0-9]',password) is None:

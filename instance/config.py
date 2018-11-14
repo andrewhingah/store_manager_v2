@@ -23,7 +23,7 @@ class TestingConfig(Config):
 class StagingConfig(Config):
     """Configuration for Staging."""
     DEBUG = False
-    JWT_SECRET_KEY = "heypeople"
+    JWT_SECRET_KEY=os.getenv("SECRET")
 
 class ProductionConfig(Config):
     """Configration for Production"""

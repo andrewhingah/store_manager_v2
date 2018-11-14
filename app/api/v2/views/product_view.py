@@ -13,12 +13,11 @@ from app.api.v2.utils.validate import validate_email, verify_name_details, valid
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('category', required = True, help = "Category cannot be empty")
-parser.add_argument('name', required = True, help = "Name cannot be empty")
-parser.add_argument('quantity', required = True, help = "Quantity should be an integer")
-parser.add_argument('price', required=True, help="Price cannot be empty")
+parser.add_argument('category', required = True, help = "Category must be provided")
+parser.add_argument('name', required = True, help = "Name must be provided")
+parser.add_argument('quantity', type=int, help='Quantity must be an integer')
+parser.add_argument('price', type=int, help='Price must be an integer')
 
-# data = request.get_json(force = True)
 
 class AllProducts(Resource):
 	"""All products class"""
@@ -51,6 +50,12 @@ class AllProducts(Resource):
 		quantity = args['quantity']
 		price = args['price']
 		date_created = datetime.now()
+
+		if not quantity:
+			return {"message": "Quantity must be provided"}, 400
+		
+		if not price:
+			return {"message": "Price must be provided"}, 400
 
 		if verify_name_details(category):
 			return verify_name_details(category)
