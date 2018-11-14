@@ -141,7 +141,10 @@ Both admin and store attendant can view all products
                 "status": "created"
             }
             
-## Single Product [/api/v2/products/<int:id>]
+## Single Product [/api/v2/products/{product_id}]
+
++ Parameters
+    + product_id (number) - ID of the question in the form of an integer
 
 ### Delete a single product by id [DELETE]
 
@@ -152,7 +155,6 @@ Only an admin/store owner can delete a product.
 
     + Headers
 
-            Location: /api/v2/products/<int:id>
             Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84"
 
     + Body
@@ -185,9 +187,6 @@ Only an admin can modify product details
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Location: /api/v2/products
 
     + Body
 
@@ -215,7 +214,6 @@ Either an admin or a store atendant can view a single product
 
     + Headers
 
-            Location: /api/v2/products/<int:id>
             Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
 
     + Body
@@ -315,9 +313,12 @@ Only a store owner/ admin can view all sales.
                 "status": "ok"
             }
             
-## Single Sale [/api/v2/sales/<int:id>]
+## Single Sale [/api/v2/sales/{sale_id}]
 
-### Fetch a single sale record
++ Parameters
+    + sale_id (number) - ID of a sale in form of an integer
+
+### Fetch a single sale record [GET]
 
 Only the store owner/admin and the creater of the sale can view the single sale.
 
@@ -325,7 +326,6 @@ Only the store owner/admin and the creater of the sale can view the single sale.
 
     + Headers
 
-            Location: /api/v2/sales/<int:id>
             Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDIxMjg2NzgsIm5iZiI6MTU0MjEyODY3OCwianRpIjoiNzNkMDg0NTYtNzE2MS00OWFlLWJkOGEtY2M4YTkyZGZiYTdkIiwiZXhwIjoxNTQyMTI5NTc4LCJpZGVudGl0eSI6InN1cGVyQGFkbWluLmNvbSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.dRmjiH8SgqAdvs6X0iDQklLd_qN8kMP_iey-xTBlo84
 
     + Body
