@@ -127,18 +127,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 	- Create a sale order
 
-	A sample post sale API request should look like this:
+		A sample post sale API request should look like this:
 
-		Headers:
-			`Content-Type: application/json`
-			`Authorization: Bearer +access_token`
+			Headers:
+				`Content-Type: application/json`
+				`Authorization: Bearer +access_token`
 
-		Body
+			Body
 
-			`{
-				"product_id": 1,
-				"quantity": "30"
-			}`
+				`{
+					"product_id": 1,
+					"quantity": "30"
+				}`
 
 
 ## Built With
