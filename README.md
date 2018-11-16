@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/andrewhingah/store_manager_v2.svg?branch=develop)](https://travis-ci.com/andrewhingah/store_manager_v2)
 [![Coverage Status](https://coveralls.io/repos/github/andrewhingah/store_manager_v2/badge.svg?branch=develop)](https://coveralls.io/github/andrewhingah/store_manager_v2?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/262d9eee667b4517dcad/maintainability)](https://codeclimate.com/github/andrewhingah/store_manager_3/maintainability)
-# store_manager_3
+# store manager (version 2)
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
 This is an implementation of a restful api to power the frontend pages.
 
